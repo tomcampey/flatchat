@@ -1,0 +1,20 @@
+<svg viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Small icon bubble -->
+  <circle cx="35" cy="50" r="25" fill="#FF6F61"/>
+  <circle cx="28" cy="45" r="3" fill="white"/>
+  <circle cx="35" cy="45" r="3" fill="white"/>
+  <circle cx="42" cy="45" r="3" fill="white"/>
+  
+  <!-- Speed accent -->
+  <path d="M 45 52 L 50 56 L 54 50" stroke="#4ECDC4" stroke-width="3" stroke-linecap="round" fill="none"/>
+  
+  <!-- Wordmark text -->
+  <text x="75" y="65" font-family="DM Sans, sans-serif" font-weight="900" font-size="42" fill="#2C3E50" letter-spacing="0">
+    flatchat
+  </text>
+  
+  <!-- Tagline -->
+  <text x="75" y="82" font-family="Outfit, sans-serif" font-size="12" fill="#FF6F61" font-weight="500">
+    Fast Language Learning
+  </text>
+</svg>
