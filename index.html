@@ -5,17 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flatchat - Language Learning Flashcards</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --card-height: 220px;
-            --success: #43a047;
-            --danger: #e53935;
+            --card-height: 240px;
+            --primary: #FF6F61;
+            --primary-dark: #e05a4d;
+            --secondary: #FFB6A3;
+            --secondary-light: #fff0eb;
+            --accent: #4ECDC4;
+            --accent-dark: #3db8b0;
+            --accent-light: #e6f9f7;
+            --bg: #FFFBF5;
+            --text: #2C3E50;
+            --success: #4ECDC4;
+            --success-light: #e6f9f7;
+            --danger: #FF6F61;
+            --danger-light: #fff0eb;
+            --radius: 12px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.1);
         }
+        * { font-family: 'Inter', system-ui, sans-serif; color: var(--text); }
+
+        body { background: var(--bg); }
         body > header {
-            background: var(--pico-primary-background);
-            color: var(--pico-primary-inverse);
+            background: linear-gradient(135deg, #e05a4d 0%, var(--primary) 40%, var(--secondary) 100%);
+            color: #fff;
             padding: 1rem 0;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-lg);
         }
         body > header .container {
             display: flex;
@@ -25,8 +47,9 @@
         }
         body > header h1 {
             margin: 0;
-            font-size: 1.4rem;
-            white-space: nowrap;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
         }
         .lang-selectors {
             display: flex;
@@ -38,31 +61,37 @@
             padding: 0.4rem 0.6rem;
             width: auto;
             min-width: 120px;
-            color: var(--pico-primary-inverse);
+            color: #fff;
             background: rgba(255,255,255,0.15);
-            border-color: rgba(255,255,255,0.3);
+            border-color: rgba(255,255,255,0.25);
+            border-radius: 8px;
+            font-size: 0.85rem;
         }
+        .lang-selectors select option { color: #333; background: #fff; }
         .lang-selectors label {
             margin: 0;
-            font-size: 0.8rem;
-            opacity: 0.85;
+            font-size: 0.75rem;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 500;
         }
         .lang-selectors .lang-group {
             display: flex;
             flex-direction: column;
             gap: 0.2rem;
         }
-        #btn-swap {
-            background: rgba(255,255,255,0.2);
-            border: none;
-            font-size: 1.2rem;
+        .header-btn {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.25);
+            font-size: 1.1rem;
             cursor: pointer;
-            padding: 0.3rem 0.5rem;
-            border-radius: 4px;
-            color: var(--pico-primary-inverse);
-            align-self: flex-end;
+            padding: 0.35rem 0.6rem;
+            border-radius: 8px;
+            color: #fff;
+            transition: background 0.2s;
         }
-        #btn-swap:hover { background: rgba(255,255,255,0.35); }
+        .header-btn:hover { background: rgba(255,255,255,0.3); }
 
         .auth-area {
             margin-left: auto;
@@ -78,91 +107,186 @@
             margin: 0;
             padding: 0.35rem 0.8rem;
             font-size: 0.8rem;
-            background: rgba(255,255,255,0.2);
-            border: 1px solid rgba(255,255,255,0.3);
-            color: var(--pico-primary-inverse);
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.25);
+            color: #fff;
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 8px;
             white-space: nowrap;
+            transition: background 0.2s;
         }
-        .auth-area button:hover { background: rgba(255,255,255,0.35); }
+        .auth-area button:hover { background: rgba(255,255,255,0.3); }
         .auth-area img {
-            width: 28px;
-            height: 28px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.4);
+        }
+
+        main.container {
+            max-width: 640px;
+            background: #fff;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            padding: 0 1.5rem 1.5rem;
+            margin-bottom: 2rem;
         }
 
         nav.tabs {
             display: flex;
-            gap: 0;
-            border-bottom: 2px solid var(--pico-muted-border-color);
+            gap: 0.25rem;
+            padding: 1rem 0 0;
             margin-bottom: 1.5rem;
+            border-bottom: none;
         }
         nav.tabs button {
-            background: none;
+            background: #f1f3f5;
             border: none;
-            border-bottom: 2px solid transparent;
-            margin-bottom: -2px;
-            padding: 0.6rem 1.2rem;
+            padding: 0.55rem 1.1rem;
             cursor: pointer;
             font-weight: 500;
-            color: var(--pico-muted-color);
-            border-radius: 0;
+            font-size: 0.85rem;
+            color: #666;
+            border-radius: 20px;
+            transition: all 0.2s;
         }
         nav.tabs button.active {
-            color: var(--pico-primary);
-            border-bottom-color: var(--pico-primary);
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(255,111,97,0.35);
         }
-        nav.tabs button:hover { color: var(--pico-primary); }
+        nav.tabs button:hover:not(.active) { background: #e9ecef; color: #333; }
 
         .view { display: none; }
         .view.active { display: block; }
 
+        /* ── Translate View ── */
         .translate-direction {
             text-align: center;
-            font-size: 0.9rem;
-            color: var(--pico-muted-color);
-            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }
-        #translate-input { font-size: 1.1rem; }
+        .translate-direction .swap-dir {
+            background: none;
+            border: 1px solid #ddd;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #888;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            padding: 0;
+            margin: 0;
+        }
+        .translate-direction .swap-dir:hover { background: #f5f5f5; color: #333; border-color: #bbb; }
+
+        #translate-input {
+            font-size: 1.05rem;
+            border-radius: var(--radius);
+            border: 2px solid #e0e0e0;
+            padding: 0.8rem 1rem;
+            transition: border-color 0.2s;
+        }
+        #translate-input:focus { border-color: var(--secondary); box-shadow: 0 0 0 3px rgba(255,182,163,0.25); }
+
+        .btn-primary {
+            width: 100%;
+            background: var(--primary);
+            border: none;
+            color: #fff;
+            padding: 0.75rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(255,111,97,0.3);
+        }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-primary[aria-busy="true"] { opacity: 0.7; }
+
         .result-box {
-            background: var(--pico-card-background-color);
-            border: 1px solid var(--pico-muted-border-color);
-            border-radius: var(--pico-border-radius);
+            background: #fafbfc;
+            border: 1px solid #e8eaed;
+            border-radius: var(--radius);
             padding: 1.2rem;
             margin-top: 1rem;
         }
-        .result-box .translation {
+        .result-box .translation-primary {
             font-size: 1.4rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-        .result-box .alternatives {
+        .result-box .translation-primary .check { color: var(--accent); font-size: 1rem; }
+        .result-box .saved-label {
+            font-size: 0.75rem;
+            color: var(--success);
+            font-weight: 500;
+            margin-bottom: 0.8rem;
+        }
+        .alternatives-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-top: 0.5rem;
+        }
+        .alt-chip {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            padding: 0.3rem 0.8rem;
             font-size: 0.85rem;
-            color: var(--pico-muted-color);
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #555;
         }
-        .result-box .low-confidence {
+        .alt-chip:hover { border-color: var(--accent); color: var(--accent-dark); background: var(--accent-light); }
+        .alt-chip.selected { border-color: var(--accent); color: var(--accent-dark); background: var(--accent-light); font-weight: 600; }
+        .alt-label {
+            font-size: 0.75rem;
+            color: #999;
+            margin-top: 0.6rem;
+            margin-bottom: 0.3rem;
+        }
+        .low-confidence {
             font-size: 0.8rem;
             color: var(--danger);
             margin-top: 0.3rem;
         }
+
+        /* ── Notifications ── */
         .notification {
             position: fixed;
             bottom: 1.5rem;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--pico-card-background-color);
-            border: 1px solid var(--pico-muted-border-color);
+            background: #fff;
+            border: 1px solid #e0e0e0;
             padding: 0.7rem 1.4rem;
-            border-radius: var(--pico-border-radius);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
             z-index: 100;
             transition: opacity 0.3s;
+            font-size: 0.9rem;
         }
-        .notification.success { border-left: 4px solid var(--success); }
-        .notification.error { border-left: 4px solid var(--danger); }
+        .notification.success { border-left: 4px solid var(--accent); }
+        .notification.error { border-left: 4px solid var(--primary); }
         .notification.fade-out { opacity: 0; }
 
+        /* ── Cards View ── */
         .cards-header {
             display: flex;
             justify-content: space-between;
@@ -176,46 +300,187 @@
             min-width: 140px;
             margin: 0;
             padding: 0.4rem 0.6rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
         }
         .card-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0.6rem 0;
-            border-bottom: 1px solid var(--pico-muted-border-color);
+            padding: 0.7rem 0.8rem;
+            margin-bottom: 0.4rem;
+            background: #fafbfc;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            transition: all 0.2s;
         }
+        .card-item:hover { background: #f5f7fa; border-color: #ddd; }
         .card-item .card-text { flex: 1; }
-        .card-item .card-front { font-weight: 600; }
-        .card-item .card-arrow { margin: 0 0.5rem; color: var(--pico-muted-color); }
+        .card-item .card-front { font-weight: 600; color: #333; }
+        .card-item .card-arrow { margin: 0 0.4rem; color: #bbb; }
+        .card-item .card-back-text { color: var(--accent-dark); }
         .card-item .card-lang {
-            font-size: 0.75rem;
-            color: var(--pico-muted-color);
+            font-size: 0.7rem;
+            color: #aaa;
             margin-left: 0.5rem;
         }
         .card-item .card-box {
-            font-size: 0.7rem;
-            padding: 0.15rem 0.4rem;
-            border-radius: 3px;
-            background: var(--pico-muted-border-color);
+            font-size: 0.65rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 10px;
+            font-weight: 600;
             margin-left: 0.5rem;
         }
-        .card-item button {
+        .box-0 { background: var(--secondary-light); color: var(--primary); }
+        .box-1 { background: #fff5f2; color: var(--primary-dark); }
+        .box-2 { background: var(--accent-light); color: var(--accent-dark); }
+        .box-3 { background: #ddf5f3; color: #2fa89e; }
+        .box-4 { background: #d0f0ed; color: #1f8a81; }
+        .card-item .card-actions {
+            display: flex;
+            gap: 0.3rem;
+            margin-left: 0.5rem;
+        }
+        .card-item .card-actions button {
+            margin: 0;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            background: #fff;
+            color: #666;
+            transition: all 0.2s;
+        }
+        .card-item .card-actions button:hover { background: #f5f5f5; }
+
+        .card-edit-form {
+            display: flex;
+            gap: 0.4rem;
+            align-items: center;
+            flex: 1;
+        }
+        .card-edit-form input {
+            margin: 0;
+            padding: 0.3rem 0.5rem;
+            font-size: 0.85rem;
+            border-radius: 6px;
+            flex: 1;
+        }
+        .card-edit-form button {
             margin: 0;
             padding: 0.3rem 0.6rem;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
+            border-radius: 6px;
+            cursor: pointer;
         }
+
+        .manual-add {
+            border: 2px dashed #ddd;
+            border-radius: var(--radius);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: border-color 0.2s;
+        }
+        .manual-add:focus-within { border-color: var(--accent); }
+        .manual-add h4 { margin: 0 0 0.6rem; font-size: 0.9rem; color: #555; }
+        .manual-add .add-fields {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        .manual-add input {
+            margin: 0;
+            padding: 0.45rem 0.7rem;
+            font-size: 0.85rem;
+            border-radius: 8px;
+            flex: 1;
+        }
+        .manual-add button {
+            margin: 0;
+            padding: 0.45rem 0.8rem;
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+
+        .btn-outline {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 0.45rem 0.9rem;
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: #555;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .btn-outline:hover { border-color: #bbb; background: #fafafa; }
+
         .empty-state {
             text-align: center;
             padding: 3rem 1rem;
-            color: var(--pico-muted-color);
+            color: #aaa;
         }
 
+        /* ── Bucket Overview (Review) ── */
+        .bucket-overview {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .bucket-card {
+            flex: 1;
+            min-width: 90px;
+            text-align: center;
+            padding: 0.7rem 0.4rem;
+            border-radius: var(--radius);
+            border: 1px solid #eee;
+            background: #fafbfc;
+        }
+        .bucket-card .bucket-count {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .bucket-card .bucket-due {
+            font-size: 0.7rem;
+            color: #999;
+            margin-top: 0.1rem;
+        }
+        .bucket-card .bucket-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-top: 0.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        .bucket-card.b0 { border-color: var(--secondary); background: var(--secondary-light); }
+        .bucket-card.b0 .bucket-count { color: var(--primary); }
+        .bucket-card.b0 .bucket-label { color: var(--primary); }
+        .bucket-card.b1 { border-color: var(--secondary); background: #fff5f2; }
+        .bucket-card.b1 .bucket-count { color: var(--primary-dark); }
+        .bucket-card.b1 .bucket-label { color: var(--primary-dark); }
+        .bucket-card.b2 { border-color: #b8e8e4; background: var(--accent-light); }
+        .bucket-card.b2 .bucket-count { color: var(--accent-dark); }
+        .bucket-card.b2 .bucket-label { color: var(--accent-dark); }
+        .bucket-card.b3 { border-color: var(--accent); background: #ddf5f3; }
+        .bucket-card.b3 .bucket-count { color: #2fa89e; }
+        .bucket-card.b3 .bucket-label { color: #2fa89e; }
+        .bucket-card.b4 { border-color: #2fa89e; background: #d0f0ed; }
+        .bucket-card.b4 .bucket-count { color: #1f8a81; }
+        .bucket-card.b4 .bucket-label { color: #1f8a81; }
+
+        /* ── Flashcard (Review) ── */
         .flashcard {
             perspective: 1000px;
             cursor: pointer;
             height: var(--card-height);
             margin: 1.5rem 0;
+            opacity: 1;
+            transition: opacity 0.15s ease;
         }
+        .flashcard.fade-out { opacity: 0; transition: opacity 0.1s ease; }
+        .flashcard.fade-in { opacity: 1; transition: opacity 0.2s ease; }
         .flashcard-inner {
             position: relative;
             width: 100%;
@@ -235,75 +500,125 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            border-radius: var(--pico-border-radius);
-            border: 2px solid var(--pico-muted-border-color);
-            background: var(--pico-card-background-color);
+            border-radius: var(--radius);
+            border: 2px solid #e0e0e0;
+            background: linear-gradient(145deg, #ffffff 0%, #fafbfc 100%);
             padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
         }
         .flashcard-front .word, .flashcard-back .word {
-            font-size: 1.6rem;
-            font-weight: 600;
+            font-size: 1.7rem;
+            font-weight: 700;
         }
         .flashcard-front .hint {
-            font-size: 0.85rem;
-            color: var(--pico-muted-color);
-            margin-top: 0.8rem;
+            font-size: 0.8rem;
+            color: #bbb;
+            margin-top: 1rem;
+        }
+        .flashcard-front .direction-label {
+            font-size: 0.75rem;
+            color: #aaa;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
         }
         .flashcard-back {
             transform: rotateY(180deg);
         }
-        .flashcard-back .word { color: var(--pico-primary); }
+        .flashcard-back .word { color: var(--accent-dark); }
         .flashcard-back .lang-label {
-            font-size: 0.8rem;
-            color: var(--pico-muted-color);
-            margin-top: 0.3rem;
+            font-size: 0.75rem;
+            color: #aaa;
+            margin-top: 0.4rem;
         }
         .review-buttons {
             display: flex;
-            gap: 1rem;
+            gap: 0.8rem;
             justify-content: center;
         }
-        .review-buttons button { flex: 1; max-width: 200px; }
-        .btn-knew { background: var(--success); border-color: var(--success); }
-        .btn-knew:hover { background: #388e3c; border-color: #388e3c; }
-        .btn-didnt { background: var(--danger); border-color: var(--danger); }
-        .btn-didnt:hover { background: #c62828; border-color: #c62828; }
+        .review-buttons button {
+            flex: 1;
+            max-width: 180px;
+            padding: 0.7rem;
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #fff;
+        }
+        .btn-knew { background: var(--accent); box-shadow: 0 2px 8px rgba(78,205,196,0.3); }
+        .btn-knew:hover { background: var(--accent-dark); }
+        .btn-didnt { background: var(--primary); box-shadow: 0 2px 8px rgba(255,111,97,0.3); }
+        .btn-didnt:hover { background: var(--primary-dark); }
         .review-progress {
             text-align: center;
-            color: var(--pico-muted-color);
+            color: #999;
+            font-size: 0.85rem;
             margin-bottom: 0.5rem;
         }
         .review-summary {
             text-align: center;
             padding: 2rem;
         }
-        .review-summary .score { font-size: 2rem; font-weight: 700; margin: 1rem 0; }
+        .review-summary .score {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-dark);
+            margin: 1rem 0;
+        }
 
         .sync-banner {
-            background: var(--pico-primary-focus);
+            background: var(--secondary-light);
             text-align: center;
-            padding: 0.5rem;
+            padding: 0.6rem;
             font-size: 0.85rem;
+            color: #333;
         }
         .sync-banner button {
-            margin: 0 0.5rem;
-            padding: 0.2rem 0.6rem;
+            margin: 0 0.3rem;
+            padding: 0.25rem 0.7rem;
             font-size: 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
         }
+
+        .footer-actions {
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+        }
+        .btn-danger-outline {
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 0.35rem 0.8rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            color: #aaa;
+            transition: all 0.2s;
+        }
+        .btn-danger-outline:hover { color: var(--danger); border-color: var(--danger); }
 
         @media (max-width: 576px) {
             body > header .container { flex-direction: column; align-items: stretch; }
             .lang-selectors { flex-wrap: wrap; }
             .auth-area { margin-left: 0; }
-            nav.tabs button { padding: 0.5rem 0.8rem; font-size: 0.9rem; }
+            nav.tabs button { padding: 0.45rem 0.75rem; font-size: 0.8rem; }
+            main.container { margin: 0 0.5rem 1rem; padding: 0 1rem 1rem; border-radius: var(--radius); }
+            .bucket-overview { gap: 0.3rem; }
+            .bucket-card { min-width: 55px; padding: 0.5rem 0.2rem; }
+            .bucket-card .bucket-count { font-size: 1.1rem; }
+            .manual-add .add-fields { flex-direction: column; }
         }
     </style>
 </head>
 <body>
     <div id="sync-banner" class="sync-banner" style="display:none">
         You have local flashcards. Merge them into your account?
-        <button id="btn-merge-yes" class="outline">Yes, merge</button>
-        <button id="btn-merge-no" class="outline secondary">No, discard</button>
+        <button id="btn-merge-yes" class="btn-outline">Yes, merge</button>
+        <button id="btn-merge-no" class="btn-outline">No, discard</button>
     </div>
 
     <header>
@@ -314,7 +629,7 @@
                     <label for="base-lang">I speak</label>
                     <select id="base-lang"></select>
                 </div>
-                <button id="btn-swap" title="Swap languages">&#8644;</button>
+                <button id="btn-swap" class="header-btn" title="Swap languages">&#8644;</button>
                 <div class="lang-group">
                     <label for="target-lang">I'm learning</label>
                     <select id="target-lang"></select>
@@ -335,50 +650,72 @@
             <button data-view="review">Review</button>
         </nav>
 
+        <!-- Translate View -->
         <section id="view-translate" class="view active">
-            <div class="translate-direction" id="translate-direction"></div>
+            <div class="translate-direction" id="translate-direction">
+                <span id="dir-from"></span>
+                <button class="swap-dir" id="btn-swap-dir" title="Swap direction">&#8644;</button>
+                <span id="dir-to"></span>
+            </div>
             <input type="text" id="translate-input" placeholder="Enter a word or phrase..." autocomplete="off">
-            <button id="btn-translate" style="width:100%">Translate</button>
+            <button id="btn-translate" class="btn-primary">Translate</button>
             <div id="translate-result" class="result-box" style="display:none">
-                <div class="translation" id="result-translation"></div>
-                <div class="alternatives" id="result-alternatives"></div>
+                <div class="translation-primary" id="result-translation"><span id="result-text"></span> <span class="check">&#10003;</span></div>
+                <div class="saved-label" id="saved-label">Saved as flashcard</div>
                 <div class="low-confidence" id="result-warning" style="display:none"></div>
+                <div class="alt-label" id="alt-label" style="display:none">Alternative translations (tap to switch):</div>
+                <div class="alternatives-list" id="result-alternatives"></div>
             </div>
         </section>
 
+        <!-- Cards View -->
         <section id="view-cards" class="view">
+            <div class="manual-add">
+                <h4>Add card manually</h4>
+                <div class="add-fields">
+                    <input type="text" id="manual-front" placeholder="Word (your language)" autocomplete="off">
+                    <input type="text" id="manual-back" placeholder="Translation" autocomplete="off">
+                    <button class="btn-primary" id="btn-manual-add" style="width:auto;padding:0.45rem 1rem">Add</button>
+                </div>
+            </div>
             <div class="cards-header">
                 <div><strong id="cards-total">0 cards</strong></div>
                 <div style="display:flex;gap:0.5rem;align-items:center">
                     <select id="cards-lang-filter"><option value="all">All languages</option></select>
-                    <button id="btn-start-review" class="outline" style="margin:0;white-space:nowrap">Start Review</button>
+                    <button id="btn-start-review" class="btn-outline" style="margin:0;white-space:nowrap">Start Review</button>
                 </div>
             </div>
             <div id="cards-list"></div>
             <div id="cards-empty" class="empty-state" style="display:none">
                 <p>No flashcards yet. Translate some words to get started!</p>
             </div>
-            <div style="margin-top:1rem;text-align:right">
-                <button id="btn-clear-all" class="outline secondary" style="margin:0;font-size:0.85rem" title="Delete all cards">Clear All</button>
+            <div class="footer-actions">
+                <button id="btn-clear-all" class="btn-danger-outline" title="Delete all cards">Clear All</button>
             </div>
         </section>
 
+        <!-- Review View -->
         <section id="view-review" class="view">
             <div class="cards-header">
                 <div class="review-progress" id="review-progress"></div>
-                <select id="review-lang-filter" style="width:auto;min-width:140px;margin:0;padding:0.4rem 0.6rem">
+                <select id="review-lang-filter" style="width:auto;min-width:140px;margin:0;padding:0.4rem 0.6rem;border-radius:8px;font-size:0.85rem">
                     <option value="all">All languages</option>
                 </select>
             </div>
+            <div id="bucket-overview" class="bucket-overview"></div>
             <div id="review-area">
                 <div id="review-empty" class="empty-state" style="display:none">
                     <p>No cards due for review right now.</p>
                     <p>Add more cards or come back later!</p>
                 </div>
+                <div id="review-start-area" style="text-align:center;margin:1rem 0">
+                    <button id="btn-begin-review" class="btn-primary" style="max-width:240px;margin:0 auto">Start Review</button>
+                </div>
                 <div id="review-card-container" style="display:none">
                     <div class="flashcard" id="flashcard">
                         <div class="flashcard-inner">
                             <div class="flashcard-front">
+                                <div class="direction-label" id="card-direction-label"></div>
                                 <div class="word" id="card-front-word"></div>
                                 <div class="hint">Tap to reveal</div>
                             </div>
@@ -397,7 +734,7 @@
                     <h3>Session Complete!</h3>
                     <div class="score" id="review-score"></div>
                     <p id="review-summary-text"></p>
-                    <button id="btn-review-again" class="outline">Review Again</button>
+                    <button id="btn-review-again" class="btn-outline">Review Again</button>
                 </div>
             </div>
         </section>
@@ -447,24 +784,22 @@
     ];
 
     const LEITNER_INTERVALS = [0, 1, 3, 7, 14];
+    const BOX_LABELS = ['New', 'Learning', 'Familiar', 'Known', 'Mastered'];
     const LOCAL_KEY = 'flatchat_data';
 
-    // ── Migrate old localStorage key ──
-    (function migrateOldKey() {
-        const oldRaw = localStorage.getItem('linguaflip_data');
-        if (oldRaw && !localStorage.getItem(LOCAL_KEY)) {
-            localStorage.setItem(LOCAL_KEY, oldRaw);
+    // ── Migrate old key ──
+    (function() {
+        const old = localStorage.getItem('linguaflip_data');
+        if (old && !localStorage.getItem(LOCAL_KEY)) {
+            localStorage.setItem(LOCAL_KEY, old);
             localStorage.removeItem('linguaflip_data');
-        } else if (oldRaw) {
-            // Merge old cards into new key
+        } else if (old) {
             try {
-                const oldData = JSON.parse(oldRaw);
-                const newData = JSON.parse(localStorage.getItem(LOCAL_KEY));
-                for (const card of oldData.cards) {
-                    const exists = newData.cards.some(c => c.front === card.front && c.back === card.back && c.baseLang === card.baseLang && c.targetLang === card.targetLang);
-                    if (!exists) newData.cards.push(card);
+                const od = JSON.parse(old), nd = JSON.parse(localStorage.getItem(LOCAL_KEY));
+                for (const c of od.cards) {
+                    if (!nd.cards.some(x => x.front === c.front && x.back === c.back && x.baseLang === c.baseLang && x.targetLang === c.targetLang)) nd.cards.push(c);
                 }
-                localStorage.setItem(LOCAL_KEY, JSON.stringify(newData));
+                localStorage.setItem(LOCAL_KEY, JSON.stringify(nd));
                 localStorage.removeItem('linguaflip_data');
             } catch {}
         }
@@ -473,11 +808,13 @@
     // ── App State ──
     let currentUser = null;
     let cachedCards = [];
-    let unsubCards = null; // Firestore listener unsubscribe
+    let unsubCards = null;
     let currentView = 'translate';
     let reviewSession = null;
+    let translateReversed = false; // false = base→target, true = target→base
+    let lastSavedCardId = null; // track the most recently auto-saved card for alt switching
 
-    // ── Local Storage helpers (fallback when signed out) ──
+    // ── Local Storage helpers ──
     function localLoad() {
         const raw = localStorage.getItem(LOCAL_KEY);
         if (!raw) return { settings: { baseLang: 'en', targetLang: 'es' }, cards: [] };
@@ -487,7 +824,7 @@
         try { localStorage.setItem(LOCAL_KEY, JSON.stringify(data)); } catch { notify('Storage full', 'error'); }
     }
 
-    // ── Storage (unified interface) ──
+    // ── Storage ──
     const Storage = {
         getSettings() {
             if (currentUser) {
@@ -501,9 +838,7 @@
                 localStorage.setItem(LOCAL_KEY + '_settings_' + currentUser.uid, JSON.stringify(settings));
                 db.collection('users').doc(currentUser.uid).set({ settings }, { merge: true });
             } else {
-                const d = localLoad();
-                d.settings = settings;
-                localSave(d);
+                const d = localLoad(); d.settings = settings; localSave(d);
             }
         },
         getCards() {
@@ -513,31 +848,25 @@
         async addCard(front, back, baseLang, targetLang) {
             const cards = this.getCards();
             const exists = cards.some(c => c.front === front && c.back === back && c.baseLang === baseLang && c.targetLang === targetLang);
-            if (exists) return false;
-
+            if (exists) return null;
             const card = {
                 id: 'card_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
                 front, back, baseLang, targetLang,
                 createdAt: new Date().toISOString(),
                 box: 0, lastReviewed: null, nextReview: null
             };
-
             if (currentUser) {
                 await db.collection('users').doc(currentUser.uid).collection('cards').doc(card.id).set(card);
             } else {
-                const d = localLoad();
-                d.cards.push(card);
-                localSave(d);
+                const d = localLoad(); d.cards.push(card); localSave(d);
             }
-            return true;
+            return card.id;
         },
         async removeCard(id) {
             if (currentUser) {
                 await db.collection('users').doc(currentUser.uid).collection('cards').doc(id).delete();
             } else {
-                const d = localLoad();
-                d.cards = d.cards.filter(c => c.id !== id);
-                localSave(d);
+                const d = localLoad(); d.cards = d.cards.filter(c => c.id !== id); localSave(d);
             }
         },
         async updateCard(id, updates) {
@@ -557,9 +886,7 @@
                 snap.docs.forEach(doc => batch.delete(doc.ref));
                 await batch.commit();
             } else {
-                const d = localLoad();
-                d.cards = [];
-                localSave(d);
+                const d = localLoad(); d.cards = []; localSave(d);
             }
         }
     };
@@ -578,15 +905,10 @@
                 const provider = new firebase.auth.GoogleAuthProvider();
                 const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
                 try {
-                    if (isMobile) {
-                        await auth.signInWithRedirect(provider);
-                    } else {
-                        await auth.signInWithPopup(provider);
-                    }
+                    if (isMobile) { await auth.signInWithRedirect(provider); }
+                    else { await auth.signInWithPopup(provider); }
                 } catch (err) {
-                    if (err.code !== 'auth/popup-closed-by-user') {
-                        notify('Sign in failed: ' + err.message, 'error');
-                    }
+                    if (err.code !== 'auth/popup-closed-by-user') notify('Sign in failed: ' + err.message, 'error');
                 }
             }
         });
@@ -595,29 +917,21 @@
             currentUser = user;
             if (user) {
                 userName.textContent = user.displayName || user.email;
-                if (user.photoURL) {
-                    userPhoto.src = user.photoURL;
-                    userPhoto.style.display = 'inline';
-                }
+                if (user.photoURL) { userPhoto.src = user.photoURL; userPhoto.style.display = 'inline'; }
                 btnAuth.textContent = 'Sign out';
 
-                // Load settings from Firestore
                 const userDoc = await db.collection('users').doc(user.uid).get();
                 if (userDoc.exists && userDoc.data().settings) {
                     const s = userDoc.data().settings;
                     localStorage.setItem(LOCAL_KEY + '_settings_' + user.uid, JSON.stringify(s));
-                    document.getElementById('base-lang').value = s.baseLang;
-                    document.getElementById('target-lang').value = s.targetLang;
-                    updateTranslateDirection();
+                    applySettings(s);
                 }
 
-                // Check for local cards to merge
                 const localData = localLoad();
                 if (localData.cards.length > 0) {
                     document.getElementById('sync-banner').style.display = 'block';
                 }
 
-                // Listen to Firestore cards in real time
                 startCardListener(user.uid);
             } else {
                 userName.textContent = '';
@@ -629,14 +943,11 @@
             }
         });
 
-        // Merge banner
         document.getElementById('btn-merge-yes').addEventListener('click', async () => {
             const localData = localLoad();
             for (const card of localData.cards) {
                 const exists = cachedCards.some(c => c.front === card.front && c.back === card.back && c.baseLang === card.baseLang && c.targetLang === card.targetLang);
-                if (!exists) {
-                    await db.collection('users').doc(currentUser.uid).collection('cards').doc(card.id).set(card);
-                }
+                if (!exists) await db.collection('users').doc(currentUser.uid).collection('cards').doc(card.id).set(card);
             }
             localSave({ settings: localData.settings, cards: [] });
             document.getElementById('sync-banner').style.display = 'none';
@@ -647,6 +958,12 @@
             localSave({ settings: localLoad().settings, cards: [] });
             document.getElementById('sync-banner').style.display = 'none';
         });
+    }
+
+    function applySettings(s) {
+        document.getElementById('base-lang').value = s.baseLang;
+        document.getElementById('target-lang').value = s.targetLang;
+        updateTranslateDirection();
     }
 
     function startCardListener(uid) {
@@ -664,27 +981,27 @@
     function refreshUI() {
         updateCardCountBadge();
         if (currentView === 'cards') renderCardsList();
+        if (currentView === 'review') renderBucketOverview();
     }
 
     // ── Translation ──
+    const GOOGLE_TRANSLATE_KEY = 'AIzaSyCpsANqyIv2TkLroG-2aGS_1mpMDqekz3s';
+
     async function translate(text, sourceLang, targetLang) {
-        const url = new URL('https://api.mymemory.translated.net/get');
-        url.searchParams.set('q', text.trim());
-        url.searchParams.set('langpair', `${sourceLang}|${targetLang}`);
-        const res = await fetch(url);
-        if (!res.ok) throw new Error(`API error: ${res.status}`);
+        const url = new URL('https://translation.googleapis.com/language/translate/v2');
+        url.searchParams.set('key', GOOGLE_TRANSLATE_KEY);
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ q: text.trim(), source: sourceLang, target: targetLang, format: 'text' })
+        });
+        if (!res.ok) {
+            const err = await res.json().catch(() => null);
+            throw new Error(err?.error?.message || `API error: ${res.status}`);
+        }
         const data = await res.json();
-        if (data.responseStatus !== 200) throw new Error(data.responseDetails || 'Translation failed');
-        const alternatives = (data.matches || [])
-            .map(m => m.translation)
-            .filter(t => t.toLowerCase() !== data.responseData.translatedText.toLowerCase())
-            .filter((t, i, arr) => arr.indexOf(t) === i)
-            .slice(0, 3);
-        return {
-            translatedText: data.responseData.translatedText,
-            match: data.responseData.match,
-            alternatives
-        };
+        const translatedText = data.data.translations[0].translatedText;
+        return { translatedText, match: 1, alternatives: [] };
     }
 
     // ── Notifications ──
@@ -701,23 +1018,18 @@
         return l ? l.name : code;
     }
 
+    function escHtml(s) {
+        const d = document.createElement('div');
+        d.textContent = s;
+        return d.innerHTML;
+    }
+
     // ── Spaced Repetition ──
     function getDueCards(cards) {
         const now = Date.now();
         return cards.filter(c => {
             if (!c.nextReview) return true;
             return new Date(c.nextReview).getTime() <= now;
-        });
-    }
-
-    function updateCardAfterReview(card, knewIt) {
-        const newBox = knewIt ? Math.min((card.box || 0) + 1, 4) : 0;
-        const intervalDays = LEITNER_INTERVALS[newBox];
-        const nextReview = intervalDays === 0 ? null : new Date(Date.now() + intervalDays * 86400000).toISOString();
-        Storage.updateCard(card.id, {
-            box: newBox,
-            lastReviewed: new Date().toISOString(),
-            nextReview
         });
     }
 
@@ -780,7 +1092,11 @@
 
     function updateTranslateDirection() {
         const s = Storage.getSettings();
-        document.getElementById('translate-direction').textContent = `${langName(s.baseLang)} \u2192 ${langName(s.targetLang)}`;
+        const from = translateReversed ? s.targetLang : s.baseLang;
+        const to = translateReversed ? s.baseLang : s.targetLang;
+        document.getElementById('dir-from').textContent = langName(from);
+        document.getElementById('dir-to').textContent = langName(to);
+        document.getElementById('translate-input').placeholder = `Enter a word in ${langName(from)}...`;
     }
 
     function initNavigation() {
@@ -794,7 +1110,7 @@
                 document.getElementById('view-' + viewName).classList.add('active');
                 currentView = viewName;
                 if (viewName === 'cards') renderCardsList();
-                if (viewName === 'review') initReviewSession();
+                if (viewName === 'review') { renderBucketOverview(); resetReviewView(); }
             });
         });
     }
@@ -810,39 +1126,80 @@
         const btn = document.getElementById('btn-translate');
         const resultBox = document.getElementById('translate-result');
 
+        document.getElementById('btn-swap-dir').addEventListener('click', () => {
+            translateReversed = !translateReversed;
+            updateTranslateDirection();
+        });
+
         async function doTranslate() {
             const text = input.value.trim();
             if (!text) return;
             const s = Storage.getSettings();
+            const srcLang = translateReversed ? s.targetLang : s.baseLang;
+            const tgtLang = translateReversed ? s.baseLang : s.targetLang;
+
             btn.setAttribute('aria-busy', 'true');
             btn.disabled = true;
             resultBox.style.display = 'none';
 
             try {
-                const result = await translate(text, s.baseLang, s.targetLang);
-                document.getElementById('result-translation').textContent = result.translatedText;
-
-                const altEl = document.getElementById('result-alternatives');
-                altEl.textContent = result.alternatives.length > 0
-                    ? 'Also: ' + result.alternatives.join(', ')
-                    : '';
+                const result = await translate(text, srcLang, tgtLang);
+                document.getElementById('result-text').textContent = result.translatedText;
 
                 const warnEl = document.getElementById('result-warning');
                 if (result.match < 0.5) {
-                    warnEl.textContent = 'Low confidence translation \u2014 result may be approximate.';
+                    warnEl.textContent = 'Low confidence \u2014 result may be approximate.';
                     warnEl.style.display = 'block';
                 } else {
                     warnEl.style.display = 'none';
                 }
 
-                resultBox.style.display = 'block';
+                // Auto-save: front is always base lang, back is always target lang
+                const front = translateReversed ? result.translatedText : text;
+                const back = translateReversed ? text : result.translatedText;
+                const cardId = await Storage.addCard(front, back, s.baseLang, s.targetLang);
+                lastSavedCardId = cardId;
 
-                const added = await Storage.addCard(text, result.translatedText, s.baseLang, s.targetLang);
-                if (added) {
-                    notify('Saved as flashcard!');
+                const savedLabel = document.getElementById('saved-label');
+                if (cardId) {
+                    savedLabel.textContent = 'Saved as flashcard';
+                    savedLabel.style.color = 'var(--accent-dark)';
                 } else {
-                    notify('Card already exists', 'error');
+                    savedLabel.textContent = 'Card already exists';
+                    savedLabel.style.color = '#999';
+                    lastSavedCardId = null;
                 }
+
+                // Alternatives
+                const altContainer = document.getElementById('result-alternatives');
+                const altLabel = document.getElementById('alt-label');
+                altContainer.innerHTML = '';
+                if (result.alternatives.length > 0) {
+                    altLabel.style.display = 'block';
+                    result.alternatives.forEach(alt => {
+                        const chip = document.createElement('button');
+                        chip.className = 'alt-chip';
+                        chip.textContent = alt;
+                        chip.addEventListener('click', async () => {
+                            // Switch the saved card to this alternative
+                            document.getElementById('result-text').textContent = alt;
+                            altContainer.querySelectorAll('.alt-chip').forEach(c => c.classList.remove('selected'));
+                            chip.classList.add('selected');
+                            if (lastSavedCardId) {
+                                const newBack = translateReversed ? text : alt;
+                                const newFront = translateReversed ? alt : text;
+                                await Storage.updateCard(lastSavedCardId, { front: newFront, back: newBack });
+                                savedLabel.textContent = 'Updated flashcard';
+                                notify('Flashcard updated');
+                            }
+                        });
+                        altContainer.appendChild(chip);
+                    });
+                } else {
+                    altLabel.style.display = 'none';
+                }
+
+                resultBox.style.display = 'block';
                 updateCardCountBadge();
             } catch (err) {
                 notify(err.message || 'Translation failed', 'error');
@@ -871,23 +1228,39 @@
             document.querySelector('nav.tabs button[data-view="review"]').click();
         });
         document.getElementById('cards-lang-filter').addEventListener('change', renderCardsList);
+
+        // Manual add
+        document.getElementById('btn-manual-add').addEventListener('click', async () => {
+            const frontEl = document.getElementById('manual-front');
+            const backEl = document.getElementById('manual-back');
+            const front = frontEl.value.trim();
+            const back = backEl.value.trim();
+            if (!front || !back) { notify('Enter both words', 'error'); return; }
+            const s = Storage.getSettings();
+            const cardId = await Storage.addCard(front, back, s.baseLang, s.targetLang);
+            if (cardId) {
+                notify('Card added!');
+                frontEl.value = '';
+                backEl.value = '';
+                renderCardsList();
+                updateCardCountBadge();
+            } else {
+                notify('Card already exists', 'error');
+            }
+        });
     }
 
     function renderCardsList() {
         const cards = Storage.getCards();
         const filterEl = document.getElementById('cards-lang-filter');
-        const filter = filterEl.value;
 
         const targetLangs = [...new Set(cards.map(c => c.targetLang))];
         const currentFilter = filterEl.value;
         filterEl.innerHTML = '<option value="all">All languages</option>';
-        targetLangs.forEach(code => {
-            filterEl.add(new Option(langName(code), code));
-        });
-        if (targetLangs.includes(currentFilter) || currentFilter === 'all') {
-            filterEl.value = currentFilter;
-        }
+        targetLangs.forEach(code => filterEl.add(new Option(langName(code), code)));
+        if (targetLangs.includes(currentFilter) || currentFilter === 'all') filterEl.value = currentFilter;
 
+        const filter = filterEl.value;
         const filtered = filter === 'all' ? cards : cards.filter(c => c.targetLang === filter);
 
         const listEl = document.getElementById('cards-list');
@@ -901,17 +1274,19 @@
         }
         emptyEl.style.display = 'none';
 
-        const boxLabels = ['New', 'Learning', 'Familiar', 'Known', 'Mastered'];
         listEl.innerHTML = filtered.map(c => `
             <div class="card-item" data-id="${c.id}">
                 <div class="card-text">
                     <span class="card-front">${escHtml(c.front)}</span>
                     <span class="card-arrow">\u2192</span>
-                    <span>${escHtml(c.back)}</span>
+                    <span class="card-back-text">${escHtml(c.back)}</span>
                     <span class="card-lang">${langName(c.baseLang)}\u2192${langName(c.targetLang)}</span>
-                    <span class="card-box">${boxLabels[c.box || 0]}</span>
+                    <span class="card-box box-${c.box || 0}">${BOX_LABELS[c.box || 0]}</span>
                 </div>
-                <button class="outline secondary btn-delete-card" data-id="${c.id}">\u00D7</button>
+                <div class="card-actions">
+                    <button class="btn-edit-card" data-id="${c.id}" data-front="${escHtml(c.front)}" data-back="${escHtml(c.back)}">&#9998;</button>
+                    <button class="btn-delete-card" data-id="${c.id}">\u00D7</button>
+                </div>
             </div>
         `).join('');
 
@@ -922,12 +1297,33 @@
                 updateCardCountBadge();
             });
         });
-    }
 
-    function escHtml(s) {
-        const d = document.createElement('div');
-        d.textContent = s;
-        return d.innerHTML;
+        listEl.querySelectorAll('.btn-edit-card').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const item = btn.closest('.card-item');
+                const cardId = btn.dataset.id;
+                const front = btn.dataset.front;
+                const back = btn.dataset.back;
+                item.innerHTML = `
+                    <div class="card-edit-form">
+                        <input type="text" class="edit-front" value="${front}">
+                        <span style="color:#bbb">\u2192</span>
+                        <input type="text" class="edit-back" value="${back}">
+                        <button class="btn-save-edit btn-primary" style="width:auto;padding:0.3rem 0.7rem;font-size:0.8rem">Save</button>
+                        <button class="btn-cancel-edit btn-outline" style="padding:0.3rem 0.7rem;font-size:0.8rem">Cancel</button>
+                    </div>
+                `;
+                item.querySelector('.btn-save-edit').addEventListener('click', async () => {
+                    const newFront = item.querySelector('.edit-front').value.trim();
+                    const newBack = item.querySelector('.edit-back').value.trim();
+                    if (!newFront || !newBack) { notify('Enter both words', 'error'); return; }
+                    await Storage.updateCard(cardId, { front: newFront, back: newBack });
+                    notify('Card updated');
+                    renderCardsList();
+                });
+                item.querySelector('.btn-cancel-edit').addEventListener('click', () => renderCardsList());
+            });
+        });
     }
 
     // ── Review View ──
@@ -935,71 +1331,150 @@
         document.getElementById('flashcard').addEventListener('click', () => {
             document.getElementById('flashcard').classList.toggle('flipped');
         });
-
         document.getElementById('btn-knew').addEventListener('click', () => answerCard(true));
         document.getElementById('btn-didnt').addEventListener('click', () => answerCard(false));
-        document.getElementById('btn-review-again').addEventListener('click', initReviewSession);
-        document.getElementById('review-lang-filter').addEventListener('change', initReviewSession);
+        document.getElementById('btn-review-again').addEventListener('click', () => { renderBucketOverview(); resetReviewView(); beginReviewSession(); });
+        document.getElementById('review-lang-filter').addEventListener('change', () => { renderBucketOverview(); resetReviewView(); });
+        document.getElementById('btn-begin-review').addEventListener('click', beginReviewSession);
     }
 
-    function initReviewSession() {
+    function resetReviewView() {
+        document.getElementById('review-card-container').style.display = 'none';
+        document.getElementById('review-summary').style.display = 'none';
+        document.getElementById('review-empty').style.display = 'none';
+        document.getElementById('review-start-area').style.display = 'block';
+        document.getElementById('review-progress').textContent = '';
+    }
+
+    function renderBucketOverview() {
         const cards = Storage.getCards();
         const filterEl = document.getElementById('review-lang-filter');
 
         const targetLangs = [...new Set(cards.map(c => c.targetLang))];
         const currentFilter = filterEl.value;
         filterEl.innerHTML = '<option value="all">All languages</option>';
-        targetLangs.forEach(code => {
-            filterEl.add(new Option(langName(code), code));
-        });
-        if (targetLangs.includes(currentFilter) || currentFilter === 'all') {
-            filterEl.value = currentFilter;
-        }
+        targetLangs.forEach(code => filterEl.add(new Option(langName(code), code)));
+        if (targetLangs.includes(currentFilter) || currentFilter === 'all') filterEl.value = currentFilter;
 
         const filter = filterEl.value;
         const filtered = filter === 'all' ? cards : cards.filter(c => c.targetLang === filter);
+
+        const buckets = [0, 1, 2, 3, 4].map(box => {
+            const inBox = filtered.filter(c => (c.box || 0) === box);
+            const due = getDueCards(inBox).length;
+            return { box, total: inBox.length, due };
+        });
+
+        const totalDue = buckets.reduce((s, b) => s + b.due, 0);
+
+        document.getElementById('bucket-overview').innerHTML = buckets.map(b => `
+            <div class="bucket-card b${b.box}">
+                <div class="bucket-count">${b.total}</div>
+                <div class="bucket-label">${BOX_LABELS[b.box]}</div>
+                <div class="bucket-due">${b.due} due</div>
+            </div>
+        `).join('');
+
+        // Update start button
+        const startBtn = document.getElementById('btn-begin-review');
+        if (totalDue === 0) {
+            startBtn.textContent = 'No cards due';
+            startBtn.disabled = true;
+        } else {
+            startBtn.textContent = `Review ${totalDue} card${totalDue !== 1 ? 's' : ''} (${totalDue * 2} questions)`;
+            startBtn.disabled = false;
+        }
+    }
+
+    function beginReviewSession() {
+        const cards = Storage.getCards();
+        const filter = document.getElementById('review-lang-filter').value;
+        const filtered = filter === 'all' ? cards : cards.filter(c => c.targetLang === filter);
         const due = getDueCards(filtered);
-
-        reviewSession = {
-            cards: shuffle(due),
-            index: 0,
-            knew: 0,
-            total: due.length
-        };
-
-        document.getElementById('review-summary').style.display = 'none';
 
         if (due.length === 0) {
             document.getElementById('review-empty').style.display = 'block';
-            document.getElementById('review-card-container').style.display = 'none';
-            document.getElementById('review-progress').textContent = '';
+            document.getElementById('review-start-area').style.display = 'none';
             return;
         }
 
+        // Build review items: both directions for each card
+        const items = [];
+        for (const card of due) {
+            items.push({ card, direction: 'forward', questionWord: card.front, answerWord: card.back, questionLang: card.baseLang, answerLang: card.targetLang });
+            items.push({ card, direction: 'reverse', questionWord: card.back, answerWord: card.front, questionLang: card.targetLang, answerLang: card.baseLang });
+        }
+
+        // Track per-card results
+        const cardResults = {};
+        due.forEach(c => { cardResults[c.id] = { forward: null, reverse: null }; });
+
+        reviewSession = {
+            items: shuffle(items),
+            index: 0,
+            knew: 0,
+            total: items.length,
+            cardResults
+        };
+
+        document.getElementById('review-start-area').style.display = 'none';
         document.getElementById('review-empty').style.display = 'none';
+        document.getElementById('review-summary').style.display = 'none';
         document.getElementById('review-card-container').style.display = 'block';
         showCurrentCard();
     }
 
     function showCurrentCard() {
-        const card = reviewSession.cards[reviewSession.index];
-        document.getElementById('review-progress').textContent = `Card ${reviewSession.index + 1} of ${reviewSession.total}`;
-        document.getElementById('card-front-word').textContent = card.front;
-        document.getElementById('card-back-word').textContent = card.back;
-        document.getElementById('card-back-lang').textContent = `${langName(card.baseLang)} \u2192 ${langName(card.targetLang)}`;
+        const item = reviewSession.items[reviewSession.index];
+        document.getElementById('review-progress').textContent = `Question ${reviewSession.index + 1} of ${reviewSession.total}`;
+        document.getElementById('card-direction-label').textContent = `${langName(item.questionLang)} \u2192 ${langName(item.answerLang)}`;
+        document.getElementById('card-front-word').textContent = item.questionWord;
+        document.getElementById('card-back-word').textContent = item.answerWord;
+        document.getElementById('card-back-lang').textContent = langName(item.answerLang);
         document.getElementById('flashcard').classList.remove('flipped');
     }
 
     function answerCard(knewIt) {
-        const card = reviewSession.cards[reviewSession.index];
+        const item = reviewSession.items[reviewSession.index];
         if (knewIt) reviewSession.knew++;
-        updateCardAfterReview(card, knewIt);
+
+        // Track per-card, per-direction result
+        reviewSession.cardResults[item.card.id][item.direction] = knewIt;
 
         reviewSession.index++;
         if (reviewSession.index >= reviewSession.total) {
+            // Apply spaced repetition results
+            for (const [cardId, results] of Object.entries(reviewSession.cardResults)) {
+                const bothCorrect = results.forward === true && results.reverse === true;
+                const card = Storage.getCards().find(c => c.id === cardId);
+                if (!card) continue;
+                const newBox = bothCorrect ? Math.min((card.box || 0) + 1, 4) : 0;
+                const intervalDays = LEITNER_INTERVALS[newBox];
+                const nextReview = intervalDays === 0 ? null : new Date(Date.now() + intervalDays * 86400000).toISOString();
+                Storage.updateCard(cardId, { box: newBox, lastReviewed: new Date().toISOString(), nextReview });
+            }
             showReviewSummary();
         } else {
-            showCurrentCard();
+            // Smooth transition: fade out fully, then swap content while invisible, then fade in
+            const flashcard = document.getElementById('flashcard');
+            flashcard.classList.remove('fade-in');
+            flashcard.classList.add('fade-out');
+            setTimeout(() => {
+                // Card is now invisible — safe to change content
+                flashcard.classList.remove('flipped');
+                // Wait for flip-back to finish (while still invisible)
+                setTimeout(() => {
+                    const nextItem = reviewSession.items[reviewSession.index];
+                    document.getElementById('review-progress').textContent = `Question ${reviewSession.index + 1} of ${reviewSession.total}`;
+                    document.getElementById('card-direction-label').textContent = `${langName(nextItem.questionLang)} \u2192 ${langName(nextItem.answerLang)}`;
+                    document.getElementById('card-front-word').textContent = nextItem.questionWord;
+                    document.getElementById('card-back-word').textContent = nextItem.answerWord;
+                    document.getElementById('card-back-lang').textContent = langName(nextItem.answerLang);
+                    // Now fade in
+                    flashcard.classList.remove('fade-out');
+                    flashcard.classList.add('fade-in');
+                }, 500);
+            }, 150);
         }
     }
 
@@ -1008,7 +1483,7 @@
         document.getElementById('review-summary').style.display = 'block';
         document.getElementById('review-score').textContent = `${reviewSession.knew} / ${reviewSession.total}`;
         const pct = Math.round((reviewSession.knew / reviewSession.total) * 100);
-        document.getElementById('review-summary-text').textContent = `You knew ${pct}% of your cards.`;
+        document.getElementById('review-summary-text').textContent = `You answered ${pct}% correctly across both directions.`;
         document.getElementById('review-progress').textContent = 'Done!';
         updateCardCountBadge();
     }
