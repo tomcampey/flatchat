@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flatchat - Language Learning Flashcards</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <style>
+        :root {
+            --card-height: 220px;
+            --success: #43a047;
+            --danger: #e53935;
+        }
+        body > header {
+            background: var(--pico-primary-background);
+            color: var(--pico-primary-inverse);
+            padding: 1rem 0;
+            margin-bottom: 1.5rem;
+        }
+        body > header .container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 1rem;
+        }
+        body > header h1 {
+            margin: 0;
+            font-size: 1.4rem;
+            white-space: nowrap;
+        }
+        .lang-selectors {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .lang-selectors select {
+            margin: 0;
+            padding: 0.4rem 0.6rem;
+            width: auto;
+            min-width: 120px;
+            color: var(--pico-primary-inverse);
+            background: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.3);
+        }
+        .lang-selectors label {
+            margin: 0;
+            font-size: 0.8rem;
+            opacity: 0.85;
+        }
+        .lang-selectors .lang-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+        #btn-swap {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.3rem 0.5rem;
+            border-radius: 4px;
+            color: var(--pico-primary-inverse);
+            align-self: flex-end;
+        }
+        #btn-swap:hover { background: rgba(255,255,255,0.35); }
+
+        .auth-area {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .auth-area .user-name {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+        .auth-area button {
+            margin: 0;
+            padding: 0.35rem 0.8rem;
+            font-size: 0.8rem;
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: var(--pico-primary-inverse);
+            cursor: pointer;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+        .auth-area button:hover { background: rgba(255,255,255,0.35); }
+        .auth-area img {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+        }
+
+        nav.tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 2px solid var(--pico-muted-border-color);
+            margin-bottom: 1.5rem;
+        }
+        nav.tabs button {
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            padding: 0.6rem 1.2rem;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--pico-muted-color);
+            border-radius: 0;
+        }
+        nav.tabs button.active {
+            color: var(--pico-primary);
+            border-bottom-color: var(--pico-primary);
+        }
+        nav.tabs button:hover { color: var(--pico-primary); }
+
+        .view { display: none; }
+        .view.active { display: block; }
+
+        .translate-direction {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--pico-muted-color);
+            margin-bottom: 1rem;
+        }
+        #translate-input { font-size: 1.1rem; }
+        .result-box {
+            background: var(--pico-card-background-color);
+            border: 1px solid var(--pico-muted-border-color);
+            border-radius: var(--pico-border-radius);
+            padding: 1.2rem;
+            margin-top: 1rem;
+        }
+        .result-box .translation {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .result-box .alternatives {
+            font-size: 0.85rem;
+            color: var(--pico-muted-color);
+        }
+        .result-box .low-confidence {
+            font-size: 0.8rem;
+            color: var(--danger);
+            margin-top: 0.3rem;
+        }
+        .notification {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--pico-card-background-color);
+            border: 1px solid var(--pico-muted-border-color);
+            padding: 0.7rem 1.4rem;
+            border-radius: var(--pico-border-radius);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 100;
+            transition: opacity 0.3s;
+        }
+        .notification.success { border-left: 4px solid var(--success); }
+        .notification.error { border-left: 4px solid var(--danger); }
+        .notification.fade-out { opacity: 0; }
+
+        .cards-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .cards-header select {
+            width: auto;
+            min-width: 140px;
+            margin: 0;
+            padding: 0.4rem 0.6rem;
+        }
+        .card-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid var(--pico-muted-border-color);
+        }
+        .card-item .card-text { flex: 1; }
+        .card-item .card-front { font-weight: 600; }
+        .card-item .card-arrow { margin: 0 0.5rem; color: var(--pico-muted-color); }
+        .card-item .card-lang {
+            font-size: 0.75rem;
+            color: var(--pico-muted-color);
+            margin-left: 0.5rem;
+        }
+        .card-item .card-box {
+            font-size: 0.7rem;
+            padding: 0.15rem 0.4rem;
+            border-radius: 3px;
+            background: var(--pico-muted-border-color);
+            margin-left: 0.5rem;
+        }
+        .card-item button {
+            margin: 0;
+            padding: 0.3rem 0.6rem;
+            font-size: 0.8rem;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--pico-muted-color);
+        }
+
+        .flashcard {
+            perspective: 1000px;
+            cursor: pointer;
+            height: var(--card-height);
+            margin: 1.5rem 0;
+        }
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s;
+            transform-style: preserve-3d;
+        }
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--pico-border-radius);
+            border: 2px solid var(--pico-muted-border-color);
+            background: var(--pico-card-background-color);
+            padding: 1.5rem;
+        }
+        .flashcard-front .word, .flashcard-back .word {
+            font-size: 1.6rem;
+            font-weight: 600;
+        }
+        .flashcard-front .hint {
+            font-size: 0.85rem;
+            color: var(--pico-muted-color);
+            margin-top: 0.8rem;
+        }
+        .flashcard-back {
+            transform: rotateY(180deg);
+        }
+        .flashcard-back .word { color: var(--pico-primary); }
+        .flashcard-back .lang-label {
+            font-size: 0.8rem;
+            color: var(--pico-muted-color);
+            margin-top: 0.3rem;
+        }
+        .review-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        .review-buttons button { flex: 1; max-width: 200px; }
+        .btn-knew { background: var(--success); border-color: var(--success); }
+        .btn-knew:hover { background: #388e3c; border-color: #388e3c; }
+        .btn-didnt { background: var(--danger); border-color: var(--danger); }
+        .btn-didnt:hover { background: #c62828; border-color: #c62828; }
+        .review-progress {
+            text-align: center;
+            color: var(--pico-muted-color);
+            margin-bottom: 0.5rem;
+        }
+        .review-summary {
+            text-align: center;
+            padding: 2rem;
+        }
+        .review-summary .score { font-size: 2rem; font-weight: 700; margin: 1rem 0; }
+
+        .sync-banner {
+            background: var(--pico-primary-focus);
+            text-align: center;
+            padding: 0.5rem;
+            font-size: 0.85rem;
+        }
+        .sync-banner button {
+            margin: 0 0.5rem;
+            padding: 0.2rem 0.6rem;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 576px) {
+            body > header .container { flex-direction: column; align-items: stretch; }
+            .lang-selectors { flex-wrap: wrap; }
+            .auth-area { margin-left: 0; }
+            nav.tabs button { padding: 0.5rem 0.8rem; font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+    <div id="sync-banner" class="sync-banner" style="display:none">
+        You have local flashcards. Merge them into your account?
+        <button id="btn-merge-yes" class="outline">Yes, merge</button>
+        <button id="btn-merge-no" class="outline secondary">No, discard</button>
+    </div>
+
+    <header>
+        <div class="container">
+            <h1>Flatchat</h1>
+            <div class="lang-selectors">
+                <div class="lang-group">
+                    <label for="base-lang">I speak</label>
+                    <select id="base-lang"></select>
+                </div>
+                <button id="btn-swap" title="Swap languages">&#8644;</button>
+                <div class="lang-group">
+                    <label for="target-lang">I'm learning</label>
+                    <select id="target-lang"></select>
+                </div>
+            </div>
+            <div class="auth-area">
+                <span class="user-name" id="user-name"></span>
+                <img id="user-photo" style="display:none" alt="">
+                <button id="btn-auth">Sign in</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <nav class="tabs">
+            <button data-view="translate" class="active">Translate</button>
+            <button data-view="cards">My Cards <span id="card-count-badge"></span></button>
+            <button data-view="review">Review</button>
+        </nav>
+
+        <section id="view-translate" class="view active">
+            <div class="translate-direction" id="translate-direction"></div>
+            <input type="text" id="translate-input" placeholder="Enter a word or phrase..." autocomplete="off">
+            <button id="btn-translate" style="width:100%">Translate</button>
+            <div id="translate-result" class="result-box" style="display:none">
+                <div class="translation" id="result-translation"></div>
+                <div class="alternatives" id="result-alternatives"></div>
+                <div class="low-confidence" id="result-warning" style="display:none"></div>
+            </div>
+        </section>
+
+        <section id="view-cards" class="view">
+            <div class="cards-header">
+                <div><strong id="cards-total">0 cards</strong></div>
+                <div style="display:flex;gap:0.5rem;align-items:center">
+                    <select id="cards-lang-filter"><option value="all">All languages</option></select>
+                    <button id="btn-start-review" class="outline" style="margin:0;white-space:nowrap">Start Review</button>
+                </div>
+            </div>
+            <div id="cards-list"></div>
+            <div id="cards-empty" class="empty-state" style="display:none">
+                <p>No flashcards yet. Translate some words to get started!</p>
+            </div>
+            <div style="margin-top:1rem;text-align:right">
+                <button id="btn-clear-all" class="outline secondary" style="margin:0;font-size:0.85rem" title="Delete all cards">Clear All</button>
+            </div>
+        </section>
+
+        <section id="view-review" class="view">
+            <div class="cards-header">
+                <div class="review-progress" id="review-progress"></div>
+                <select id="review-lang-filter" style="width:auto;min-width:140px;margin:0;padding:0.4rem 0.6rem">
+                    <option value="all">All languages</option>
+                </select>
+            </div>
+            <div id="review-area">
+                <div id="review-empty" class="empty-state" style="display:none">
+                    <p>No cards due for review right now.</p>
+                    <p>Add more cards or come back later!</p>
+                </div>
+                <div id="review-card-container" style="display:none">
+                    <div class="flashcard" id="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front">
+                                <div class="word" id="card-front-word"></div>
+                                <div class="hint">Tap to reveal</div>
+                            </div>
+                            <div class="flashcard-back">
+                                <div class="word" id="card-back-word"></div>
+                                <div class="lang-label" id="card-back-lang"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-buttons">
+                        <button class="btn-didnt" id="btn-didnt">I didn't know it</button>
+                        <button class="btn-knew" id="btn-knew">I knew it!</button>
+                    </div>
+                </div>
+                <div id="review-summary" class="review-summary" style="display:none">
+                    <h3>Session Complete!</h3>
+                    <div class="score" id="review-score"></div>
+                    <p id="review-summary-text"></p>
+                    <button id="btn-review-again" class="outline">Review Again</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+
+    <script>
+    // ── Firebase Init ──
+    firebase.initializeApp({
+        apiKey: "AIzaSyAIKR7WYZuNInfWRo-K4uYfcQcWLd9Snl4",
+        authDomain: "flatchat-17ee3.firebaseapp.com",
+        projectId: "flatchat-17ee3",
+        storageBucket: "flatchat-17ee3.firebasestorage.app",
+        messagingSenderId: "742802440224",
+        appId: "1:742802440224:web:1798b9f95e64d4d84f7c45"
+    });
+
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    const LANGUAGES = [
+        { code: 'en', name: 'English' },
+        { code: 'es', name: 'Spanish' },
+        { code: 'fr', name: 'French' },
+        { code: 'de', name: 'German' },
+        { code: 'it', name: 'Italian' },
+        { code: 'pt', name: 'Portuguese' },
+        { code: 'nl', name: 'Dutch' },
+        { code: 'ru', name: 'Russian' },
+        { code: 'ja', name: 'Japanese' },
+        { code: 'ko', name: 'Korean' },
+        { code: 'zh', name: 'Chinese' },
+        { code: 'ar', name: 'Arabic' },
+        { code: 'hi', name: 'Hindi' },
+        { code: 'id', name: 'Indonesian' },
+        { code: 'vi', name: 'Vietnamese' },
+        { code: 'tr', name: 'Turkish' },
+        { code: 'pl', name: 'Polish' },
+        { code: 'sv', name: 'Swedish' },
+        { code: 'da', name: 'Danish' },
+        { code: 'fi', name: 'Finnish' },
+        { code: 'el', name: 'Greek' },
+        { code: 'he', name: 'Hebrew' }
+    ];
+
+    const LEITNER_INTERVALS = [0, 1, 3, 7, 14];
+    const LOCAL_KEY = 'flatchat_data';
+
+    // ── Migrate old localStorage key ──
+    (function migrateOldKey() {
+        const oldRaw = localStorage.getItem('linguaflip_data');
+        if (oldRaw && !localStorage.getItem(LOCAL_KEY)) {
+            localStorage.setItem(LOCAL_KEY, oldRaw);
+            localStorage.removeItem('linguaflip_data');
+        } else if (oldRaw) {
+            // Merge old cards into new key
+            try {
+                const oldData = JSON.parse(oldRaw);
+                const newData = JSON.parse(localStorage.getItem(LOCAL_KEY));
+                for (const card of oldData.cards) {
+                    const exists = newData.cards.some(c => c.front === card.front && c.back === card.back && c.baseLang === card.baseLang && c.targetLang === card.targetLang);
+                    if (!exists) newData.cards.push(card);
+                }
+                localStorage.setItem(LOCAL_KEY, JSON.stringify(newData));
+                localStorage.removeItem('linguaflip_data');
+            } catch {}
+        }
+    })();
+
+    // ── App State ──
+    let currentUser = null;
+    let cachedCards = [];
+    let unsubCards = null; // Firestore listener unsubscribe
+    let currentView = 'translate';
+    let reviewSession = null;
+
+    // ── Local Storage helpers (fallback when signed out) ──
+    function localLoad() {
+        const raw = localStorage.getItem(LOCAL_KEY);
+        if (!raw) return { settings: { baseLang: 'en', targetLang: 'es' }, cards: [] };
+        try { return JSON.parse(raw); } catch { return { settings: { baseLang: 'en', targetLang: 'es' }, cards: [] }; }
+    }
+    function localSave(data) {
+        try { localStorage.setItem(LOCAL_KEY, JSON.stringify(data)); } catch { notify('Storage full', 'error'); }
+    }
+
+    // ── Storage (unified interface) ──
+    const Storage = {
+        getSettings() {
+            if (currentUser) {
+                const raw = localStorage.getItem(LOCAL_KEY + '_settings_' + currentUser.uid);
+                if (raw) try { return JSON.parse(raw); } catch {}
+            }
+            return localLoad().settings;
+        },
+        saveSettings(settings) {
+            if (currentUser) {
+                localStorage.setItem(LOCAL_KEY + '_settings_' + currentUser.uid, JSON.stringify(settings));
+                db.collection('users').doc(currentUser.uid).set({ settings }, { merge: true });
+            } else {
+                const d = localLoad();
+                d.settings = settings;
+                localSave(d);
+            }
+        },
+        getCards() {
+            if (currentUser) return cachedCards;
+            return localLoad().cards;
+        },
+        async addCard(front, back, baseLang, targetLang) {
+            const cards = this.getCards();
+            const exists = cards.some(c => c.front === front && c.back === back && c.baseLang === baseLang && c.targetLang === targetLang);
+            if (exists) return false;
+
+            const card = {
+                id: 'card_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+                front, back, baseLang, targetLang,
+                createdAt: new Date().toISOString(),
+                box: 0, lastReviewed: null, nextReview: null
+            };
+
+            if (currentUser) {
+                await db.collection('users').doc(currentUser.uid).collection('cards').doc(card.id).set(card);
+            } else {
+                const d = localLoad();
+                d.cards.push(card);
+                localSave(d);
+            }
+            return true;
+        },
+        async removeCard(id) {
+            if (currentUser) {
+                await db.collection('users').doc(currentUser.uid).collection('cards').doc(id).delete();
+            } else {
+                const d = localLoad();
+                d.cards = d.cards.filter(c => c.id !== id);
+                localSave(d);
+            }
+        },
+        async updateCard(id, updates) {
+            if (currentUser) {
+                await db.collection('users').doc(currentUser.uid).collection('cards').doc(id).update(updates);
+            } else {
+                const d = localLoad();
+                const card = d.cards.find(c => c.id === id);
+                if (card) Object.assign(card, updates);
+                localSave(d);
+            }
+        },
+        async clearAll() {
+            if (currentUser) {
+                const snap = await db.collection('users').doc(currentUser.uid).collection('cards').get();
+                const batch = db.batch();
+                snap.docs.forEach(doc => batch.delete(doc.ref));
+                await batch.commit();
+            } else {
+                const d = localLoad();
+                d.cards = [];
+                localSave(d);
+            }
+        }
+    };
+
+    // ── Auth ──
+    function initAuth() {
+        const btnAuth = document.getElementById('btn-auth');
+        const userName = document.getElementById('user-name');
+        const userPhoto = document.getElementById('user-photo');
+
+        btnAuth.addEventListener('click', async () => {
+            if (currentUser) {
+                if (unsubCards) { unsubCards(); unsubCards = null; }
+                await auth.signOut();
+            } else {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                try {
+                    await auth.signInWithPopup(provider);
+                } catch (err) {
+                    if (err.code !== 'auth/popup-closed-by-user') {
+                        notify('Sign in failed: ' + err.message, 'error');
+                    }
+                }
+            }
+        });
+
+        auth.onAuthStateChanged(async (user) => {
+            currentUser = user;
+            if (user) {
+                userName.textContent = user.displayName || user.email;
+                if (user.photoURL) {
+                    userPhoto.src = user.photoURL;
+                    userPhoto.style.display = 'inline';
+                }
+                btnAuth.textContent = 'Sign out';
+
+                // Load settings from Firestore
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                if (userDoc.exists && userDoc.data().settings) {
+                    const s = userDoc.data().settings;
+                    localStorage.setItem(LOCAL_KEY + '_settings_' + user.uid, JSON.stringify(s));
+                    document.getElementById('base-lang').value = s.baseLang;
+                    document.getElementById('target-lang').value = s.targetLang;
+                    updateTranslateDirection();
+                }
+
+                // Check for local cards to merge
+                const localData = localLoad();
+                if (localData.cards.length > 0) {
+                    document.getElementById('sync-banner').style.display = 'block';
+                }
+
+                // Listen to Firestore cards in real time
+                startCardListener(user.uid);
+            } else {
+                userName.textContent = '';
+                userPhoto.style.display = 'none';
+                btnAuth.textContent = 'Sign in';
+                cachedCards = [];
+                if (unsubCards) { unsubCards(); unsubCards = null; }
+                refreshUI();
+            }
+        });
+
+        // Merge banner
+        document.getElementById('btn-merge-yes').addEventListener('click', async () => {
+            const localData = localLoad();
+            for (const card of localData.cards) {
+                const exists = cachedCards.some(c => c.front === card.front && c.back === card.back && c.baseLang === card.baseLang && c.targetLang === card.targetLang);
+                if (!exists) {
+                    await db.collection('users').doc(currentUser.uid).collection('cards').doc(card.id).set(card);
+                }
+            }
+            localSave({ settings: localData.settings, cards: [] });
+            document.getElementById('sync-banner').style.display = 'none';
+            notify('Cards merged!');
+        });
+
+        document.getElementById('btn-merge-no').addEventListener('click', () => {
+            localSave({ settings: localLoad().settings, cards: [] });
+            document.getElementById('sync-banner').style.display = 'none';
+        });
+    }
+
+    function startCardListener(uid) {
+        if (unsubCards) unsubCards();
+        unsubCards = db.collection('users').doc(uid).collection('cards')
+            .orderBy('createdAt', 'desc')
+            .onSnapshot((snap) => {
+                cachedCards = snap.docs.map(doc => doc.data());
+                refreshUI();
+            }, (err) => {
+                notify('Sync error: ' + err.message, 'error');
+            });
+    }
+
+    function refreshUI() {
+        updateCardCountBadge();
+        if (currentView === 'cards') renderCardsList();
+    }
+
+    // ── Translation ──
+    async function translate(text, sourceLang, targetLang) {
+        const url = new URL('https://api.mymemory.translated.net/get');
+        url.searchParams.set('q', text.trim());
+        url.searchParams.set('langpair', `${sourceLang}|${targetLang}`);
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`API error: ${res.status}`);
+        const data = await res.json();
+        if (data.responseStatus !== 200) throw new Error(data.responseDetails || 'Translation failed');
+        const alternatives = (data.matches || [])
+            .map(m => m.translation)
+            .filter(t => t.toLowerCase() !== data.responseData.translatedText.toLowerCase())
+            .filter((t, i, arr) => arr.indexOf(t) === i)
+            .slice(0, 3);
+        return {
+            translatedText: data.responseData.translatedText,
+            match: data.responseData.match,
+            alternatives
+        };
+    }
+
+    // ── Notifications ──
+    function notify(msg, type = 'success') {
+        const el = document.createElement('div');
+        el.className = `notification ${type}`;
+        el.textContent = msg;
+        document.body.appendChild(el);
+        setTimeout(() => { el.classList.add('fade-out'); setTimeout(() => el.remove(), 300); }, 2200);
+    }
+
+    function langName(code) {
+        const l = LANGUAGES.find(l => l.code === code);
+        return l ? l.name : code;
+    }
+
+    // ── Spaced Repetition ──
+    function getDueCards(cards) {
+        const now = Date.now();
+        return cards.filter(c => {
+            if (!c.nextReview) return true;
+            return new Date(c.nextReview).getTime() <= now;
+        });
+    }
+
+    function updateCardAfterReview(card, knewIt) {
+        const newBox = knewIt ? Math.min((card.box || 0) + 1, 4) : 0;
+        const intervalDays = LEITNER_INTERVALS[newBox];
+        const nextReview = intervalDays === 0 ? null : new Date(Date.now() + intervalDays * 86400000).toISOString();
+        Storage.updateCard(card.id, {
+            box: newBox,
+            lastReviewed: new Date().toISOString(),
+            nextReview
+        });
+    }
+
+    function shuffle(arr) {
+        const a = [...arr];
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    }
+
+    // ── Init ──
+    document.addEventListener('DOMContentLoaded', () => {
+        initAuth();
+        initLangSelectors();
+        initNavigation();
+        initTranslateView();
+        initCardsView();
+        initReviewView();
+    });
+
+    function initLangSelectors() {
+        const baseEl = document.getElementById('base-lang');
+        const targetEl = document.getElementById('target-lang');
+        const settings = Storage.getSettings();
+
+        LANGUAGES.forEach(l => {
+            baseEl.add(new Option(l.name, l.code));
+            targetEl.add(new Option(l.name, l.code));
+        });
+
+        baseEl.value = settings.baseLang;
+        targetEl.value = settings.targetLang;
+
+        const saveSettings = () => {
+            if (baseEl.value === targetEl.value) {
+                notify('Base and target language must be different', 'error');
+                const s = Storage.getSettings();
+                baseEl.value = s.baseLang;
+                targetEl.value = s.targetLang;
+                return;
+            }
+            Storage.saveSettings({ baseLang: baseEl.value, targetLang: targetEl.value });
+            updateTranslateDirection();
+        };
+
+        baseEl.addEventListener('change', saveSettings);
+        targetEl.addEventListener('change', saveSettings);
+
+        document.getElementById('btn-swap').addEventListener('click', () => {
+            const tmp = baseEl.value;
+            baseEl.value = targetEl.value;
+            targetEl.value = tmp;
+            saveSettings();
+        });
+
+        updateTranslateDirection();
+    }
+
+    function updateTranslateDirection() {
+        const s = Storage.getSettings();
+        document.getElementById('translate-direction').textContent = `${langName(s.baseLang)} \u2192 ${langName(s.targetLang)}`;
+    }
+
+    function initNavigation() {
+        const tabs = document.querySelectorAll('nav.tabs button');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const viewName = tab.dataset.view;
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+                document.getElementById('view-' + viewName).classList.add('active');
+                currentView = viewName;
+                if (viewName === 'cards') renderCardsList();
+                if (viewName === 'review') initReviewSession();
+            });
+        });
+    }
+
+    function updateCardCountBadge() {
+        const count = Storage.getCards().length;
+        document.getElementById('card-count-badge').textContent = count > 0 ? `(${count})` : '';
+    }
+
+    // ── Translate View ──
+    function initTranslateView() {
+        const input = document.getElementById('translate-input');
+        const btn = document.getElementById('btn-translate');
+        const resultBox = document.getElementById('translate-result');
+
+        async function doTranslate() {
+            const text = input.value.trim();
+            if (!text) return;
+            const s = Storage.getSettings();
+            btn.setAttribute('aria-busy', 'true');
+            btn.disabled = true;
+            resultBox.style.display = 'none';
+
+            try {
+                const result = await translate(text, s.baseLang, s.targetLang);
+                document.getElementById('result-translation').textContent = result.translatedText;
+
+                const altEl = document.getElementById('result-alternatives');
+                altEl.textContent = result.alternatives.length > 0
+                    ? 'Also: ' + result.alternatives.join(', ')
+                    : '';
+
+                const warnEl = document.getElementById('result-warning');
+                if (result.match < 0.5) {
+                    warnEl.textContent = 'Low confidence translation \u2014 result may be approximate.';
+                    warnEl.style.display = 'block';
+                } else {
+                    warnEl.style.display = 'none';
+                }
+
+                resultBox.style.display = 'block';
+
+                const added = await Storage.addCard(text, result.translatedText, s.baseLang, s.targetLang);
+                if (added) {
+                    notify('Saved as flashcard!');
+                } else {
+                    notify('Card already exists', 'error');
+                }
+                updateCardCountBadge();
+            } catch (err) {
+                notify(err.message || 'Translation failed', 'error');
+            } finally {
+                btn.removeAttribute('aria-busy');
+                btn.disabled = false;
+            }
+        }
+
+        btn.addEventListener('click', doTranslate);
+        input.addEventListener('keydown', e => { if (e.key === 'Enter') doTranslate(); });
+        updateCardCountBadge();
+    }
+
+    // ── Cards View ──
+    function initCardsView() {
+        document.getElementById('btn-clear-all').addEventListener('click', async () => {
+            if (confirm('Delete all flashcards? This cannot be undone.')) {
+                await Storage.clearAll();
+                renderCardsList();
+                updateCardCountBadge();
+                notify('All cards deleted');
+            }
+        });
+        document.getElementById('btn-start-review').addEventListener('click', () => {
+            document.querySelector('nav.tabs button[data-view="review"]').click();
+        });
+        document.getElementById('cards-lang-filter').addEventListener('change', renderCardsList);
+    }
+
+    function renderCardsList() {
+        const cards = Storage.getCards();
+        const filterEl = document.getElementById('cards-lang-filter');
+        const filter = filterEl.value;
+
+        const targetLangs = [...new Set(cards.map(c => c.targetLang))];
+        const currentFilter = filterEl.value;
+        filterEl.innerHTML = '<option value="all">All languages</option>';
+        targetLangs.forEach(code => {
+            filterEl.add(new Option(langName(code), code));
+        });
+        if (targetLangs.includes(currentFilter) || currentFilter === 'all') {
+            filterEl.value = currentFilter;
+        }
+
+        const filtered = filter === 'all' ? cards : cards.filter(c => c.targetLang === filter);
+
+        const listEl = document.getElementById('cards-list');
+        const emptyEl = document.getElementById('cards-empty');
+        document.getElementById('cards-total').textContent = `${filtered.length} card${filtered.length !== 1 ? 's' : ''}`;
+
+        if (filtered.length === 0) {
+            listEl.innerHTML = '';
+            emptyEl.style.display = 'block';
+            return;
+        }
+        emptyEl.style.display = 'none';
+
+        const boxLabels = ['New', 'Learning', 'Familiar', 'Known', 'Mastered'];
+        listEl.innerHTML = filtered.map(c => `
+            <div class="card-item" data-id="${c.id}">
+                <div class="card-text">
+                    <span class="card-front">${escHtml(c.front)}</span>
+                    <span class="card-arrow">\u2192</span>
+                    <span>${escHtml(c.back)}</span>
+                    <span class="card-lang">${langName(c.baseLang)}\u2192${langName(c.targetLang)}</span>
+                    <span class="card-box">${boxLabels[c.box || 0]}</span>
+                </div>
+                <button class="outline secondary btn-delete-card" data-id="${c.id}">\u00D7</button>
+            </div>
+        `).join('');
+
+        listEl.querySelectorAll('.btn-delete-card').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                await Storage.removeCard(btn.dataset.id);
+                renderCardsList();
+                updateCardCountBadge();
+            });
+        });
+    }
+
+    function escHtml(s) {
+        const d = document.createElement('div');
+        d.textContent = s;
+        return d.innerHTML;
+    }
+
+    // ── Review View ──
+    function initReviewView() {
+        document.getElementById('flashcard').addEventListener('click', () => {
+            document.getElementById('flashcard').classList.toggle('flipped');
+        });
+
+        document.getElementById('btn-knew').addEventListener('click', () => answerCard(true));
+        document.getElementById('btn-didnt').addEventListener('click', () => answerCard(false));
+        document.getElementById('btn-review-again').addEventListener('click', initReviewSession);
+        document.getElementById('review-lang-filter').addEventListener('change', initReviewSession);
+    }
+
+    function initReviewSession() {
+        const cards = Storage.getCards();
+        const filterEl = document.getElementById('review-lang-filter');
+
+        const targetLangs = [...new Set(cards.map(c => c.targetLang))];
+        const currentFilter = filterEl.value;
+        filterEl.innerHTML = '<option value="all">All languages</option>';
+        targetLangs.forEach(code => {
+            filterEl.add(new Option(langName(code), code));
+        });
+        if (targetLangs.includes(currentFilter) || currentFilter === 'all') {
+            filterEl.value = currentFilter;
+        }
+
+        const filter = filterEl.value;
+        const filtered = filter === 'all' ? cards : cards.filter(c => c.targetLang === filter);
+        const due = getDueCards(filtered);
+
+        reviewSession = {
+            cards: shuffle(due),
+            index: 0,
+            knew: 0,
+            total: due.length
+        };
+
+        document.getElementById('review-summary').style.display = 'none';
+
+        if (due.length === 0) {
+            document.getElementById('review-empty').style.display = 'block';
+            document.getElementById('review-card-container').style.display = 'none';
+            document.getElementById('review-progress').textContent = '';
+            return;
+        }
+
+        document.getElementById('review-empty').style.display = 'none';
+        document.getElementById('review-card-container').style.display = 'block';
+        showCurrentCard();
+    }
+
+    function showCurrentCard() {
+        const card = reviewSession.cards[reviewSession.index];
+        document.getElementById('review-progress').textContent = `Card ${reviewSession.index + 1} of ${reviewSession.total}`;
+        document.getElementById('card-front-word').textContent = card.front;
+        document.getElementById('card-back-word').textContent = card.back;
+        document.getElementById('card-back-lang').textContent = `${langName(card.baseLang)} \u2192 ${langName(card.targetLang)}`;
+        document.getElementById('flashcard').classList.remove('flipped');
+    }
+
+    function answerCard(knewIt) {
+        const card = reviewSession.cards[reviewSession.index];
+        if (knewIt) reviewSession.knew++;
+        updateCardAfterReview(card, knewIt);
+
+        reviewSession.index++;
+        if (reviewSession.index >= reviewSession.total) {
+            showReviewSummary();
+        } else {
+            showCurrentCard();
+        }
+    }
+
+    function showReviewSummary() {
+        document.getElementById('review-card-container').style.display = 'none';
+        document.getElementById('review-summary').style.display = 'block';
+        document.getElementById('review-score').textContent = `${reviewSession.knew} / ${reviewSession.total}`;
+        const pct = Math.round((reviewSession.knew / reviewSession.total) * 100);
+        document.getElementById('review-summary-text').textContent = `You knew ${pct}% of your cards.`;
+        document.getElementById('review-progress').textContent = 'Done!';
+        updateCardCountBadge();
+    }
+    </script>
+</body>
+</html>
