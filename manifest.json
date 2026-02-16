@@ -1,0 +1,17 @@
+{
+  "name": "Flatchat",
+  "short_name": "Flatchat",
+  "description": "Fast Language Learning Flashcards",
+  "start_url": "/flatchat/",
+  "display": "standalone",
+  "background_color": "#FFFBF5",
+  "theme_color": "#FF6F61",
+  "icons": [
+    {
+      "src": "Logo/flatchat-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

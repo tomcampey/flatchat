@@ -1,0 +1,39 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Speed lines -->
+  <g class="speed-line">
+    <line x1="15" y1="85" x2="50" y2="85" stroke="#FFB6A3" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 8">
+      <animate attributeName="stroke-dashoffset" values="0;-20;0" dur="1.5s" repeatCount="indefinite"/>
+    </line>
+    <line x1="10" y1="100" x2="48" y2="100" stroke="#FFB6A3" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 8">
+      <animate attributeName="stroke-dashoffset" values="0;-20;0" dur="1.5s" repeatCount="indefinite"/>
+    </line>
+    <line x1="18" y1="115" x2="52" y2="115" stroke="#FFB6A3" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 8">
+      <animate attributeName="stroke-dashoffset" values="0;-20;0" dur="1.5s" repeatCount="indefinite"/>
+    </line>
+  </g>
+  
+  <!-- Main chat bubble -->
+  <g class="bubble">
+    <animateTransform attributeName="transform" type="translate" values="0,0; 0,-8; 0,0" dur="3s" repeatCount="indefinite"/>
+    
+    <!-- Main bubble body -->
+    <path d="M 60 70 Q 60 50 80 50 L 140 50 Q 160 50 160 70 L 160 110 Q 160 130 140 130 L 95 130 L 80 145 L 82 130 L 80 130 Q 60 130 60 110 Z" 
+          fill="#FF6F61"/>
+    
+    <!-- Turquoise accent on bubble -->
+    <circle cx="150" cy="60" r="12" fill="#4ECDC4"/>
+    
+    <!-- Chat dots inside bubble -->
+    <circle cx="90" cy="85" r="6" fill="white"/>
+    <circle cx="110" cy="85" r="6" fill="white"/>
+    <circle cx="130" cy="85" r="6" fill="white"/>
+    
+    <!-- Lightning bolt accent -->
+    <path d="M 148 95 L 142 105 L 148 105 L 144 115 L 154 103 L 148 103 Z" fill="#4ECDC4"/>
+  </g>
+  
+  <!-- Wordmark below - WHITE for dark backgrounds -->
+  <text x="100" y="175" text-anchor="middle" font-family="DM Sans, sans-serif" font-weight="900" font-size="32" fill="white">
+    flatchat
+  </text>
+</svg>

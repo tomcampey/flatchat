@@ -1,0 +1,4 @@
+flatchat-logo-primary.svg - Full logo with icon + text (for websites, app headers)
+flatchat-icon.svg - Just the bubble icon (for app icons, favicons, social media)
+flatchat-wordmark.svg - Horizontal layout with tagline (for email signatures, marketing)
+flatchat-logo-dark.svg - Version with white text for dark backgrounds

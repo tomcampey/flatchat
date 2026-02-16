@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flatchat - Language Learning Flashcards</title>
+    <link rel="icon" type="image/svg+xml" href="Logo/flatchat-icon.svg">
+    <link rel="apple-touch-icon" href="Logo/flatchat-icon.svg">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Flatchat">
+    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,7 +38,7 @@
 
         body { background: var(--bg); }
         body > header {
-            background: linear-gradient(135deg, #e05a4d 0%, var(--primary) 40%, var(--secondary) 100%);
+            background: linear-gradient(135deg, var(--accent-dark) 0%, var(--accent) 50%, #6ed5ce 100%);
             color: #fff;
             padding: 1rem 0;
             margin-bottom: 2rem;
@@ -45,11 +50,8 @@
             align-items: center;
             gap: 1rem;
         }
-        body > header h1 {
-            margin: 0;
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
+        body > header .header-logo svg {
+            flex-shrink: 0;
         }
         .lang-selectors {
             display: flex;
@@ -84,12 +86,21 @@
         .header-btn {
             background: rgba(255,255,255,0.15);
             border: 1px solid rgba(255,255,255,0.25);
-            font-size: 1.1rem;
+            font-size: 0.85rem;
             cursor: pointer;
-            padding: 0.35rem 0.6rem;
             border-radius: 8px;
             color: #fff;
             transition: background 0.2s;
+            align-self: flex-end;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* Force same height as language selects */
+        .lang-selectors select,
+        .header-btn {
+            height: 40px;
+            box-sizing: border-box;
         }
         .header-btn:hover { background: rgba(255,255,255,0.3); }
 
@@ -151,9 +162,9 @@
             transition: all 0.2s;
         }
         nav.tabs button.active {
-            background: var(--primary);
+            background: var(--accent);
             color: #fff;
-            box-shadow: 0 2px 8px rgba(255,111,97,0.35);
+            box-shadow: 0 2px 8px rgba(78,205,196,0.35);
         }
         nav.tabs button:hover:not(.active) { background: #e9ecef; color: #333; }
 
@@ -162,32 +173,42 @@
 
         /* ── Translate View ── */
         .translate-direction {
-            text-align: center;
-            font-size: 0.85rem;
-            color: #888;
-            margin-bottom: 0.5rem;
             display: flex;
-            align-items: center;
-            justify-content: center;
+            align-items: stretch;
             gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .translate-direction .dir-lang {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #f5f7fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 0.4rem 0.6rem;
+            min-width: 120px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text);
         }
         .translate-direction .swap-dir {
-            background: none;
-            border: 1px solid #ddd;
-            border-radius: 50%;
-            width: 28px;
-            height: 28px;
+            background: #f5f7fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            min-width: 36px;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 1.1rem;
             color: #888;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             transition: all 0.2s;
-            padding: 0;
+            padding: 0.35rem 0.6rem;
             margin: 0;
         }
-        .translate-direction .swap-dir:hover { background: #f5f5f5; color: #333; border-color: #bbb; }
+        .translate-direction .swap-dir:hover { background: #e9ecef; color: #333; border-color: #bbb; }
 
         #translate-input {
             font-size: 1.05rem;
@@ -196,7 +217,7 @@
             padding: 0.8rem 1rem;
             transition: border-color 0.2s;
         }
-        #translate-input:focus { border-color: var(--secondary); box-shadow: 0 0 0 3px rgba(255,182,163,0.25); }
+        #translate-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(78,205,196,0.25); }
 
         .btn-primary {
             width: 100%;
@@ -215,8 +236,8 @@
         .btn-primary[aria-busy="true"] { opacity: 0.7; }
 
         .result-box {
-            background: #fafbfc;
-            border: 1px solid #e8eaed;
+            background: var(--accent-light);
+            border: 1px solid #b8e8e4;
             border-radius: var(--radius);
             padding: 1.2rem;
             margin-top: 1rem;
@@ -282,8 +303,8 @@
             transition: opacity 0.3s;
             font-size: 0.9rem;
         }
-        .notification.success { border-left: 4px solid var(--accent); }
-        .notification.error { border-left: 4px solid var(--primary); }
+        .notification.success { border-left: 4px solid var(--accent); background: var(--accent-light); }
+        .notification.error { border-left: 4px solid var(--primary); background: var(--danger-light); }
         .notification.fade-out { opacity: 0; }
 
         /* ── Cards View ── */
@@ -457,9 +478,9 @@
         .bucket-card.b0 { border-color: var(--secondary); background: var(--secondary-light); }
         .bucket-card.b0 .bucket-count { color: var(--primary); }
         .bucket-card.b0 .bucket-label { color: var(--primary); }
-        .bucket-card.b1 { border-color: var(--secondary); background: #fff5f2; }
-        .bucket-card.b1 .bucket-count { color: var(--primary-dark); }
-        .bucket-card.b1 .bucket-label { color: var(--primary-dark); }
+        .bucket-card.b1 { border-color: #b8e8e4; background: var(--accent-light); }
+        .bucket-card.b1 .bucket-count { color: var(--accent-dark); }
+        .bucket-card.b1 .bucket-label { color: var(--accent-dark); }
         .bucket-card.b2 { border-color: #b8e8e4; background: var(--accent-light); }
         .bucket-card.b2 .bucket-count { color: var(--accent-dark); }
         .bucket-card.b2 .bucket-label { color: var(--accent-dark); }
@@ -501,8 +522,8 @@
             align-items: center;
             justify-content: center;
             border-radius: var(--radius);
-            border: 2px solid #e0e0e0;
-            background: linear-gradient(145deg, #ffffff 0%, #fafbfc 100%);
+            border: 2px solid var(--accent-light);
+            background: linear-gradient(145deg, #ffffff 0%, var(--accent-light) 100%);
             padding: 1.5rem;
             box-shadow: var(--shadow-sm);
         }
@@ -568,8 +589,25 @@
             margin: 1rem 0;
         }
 
+        /* ── Streak ── */
+        .streak-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 20px;
+            padding: 0.3rem 0.7rem;
+            font-size: 0.85rem;
+            color: #fff;
+            white-space: nowrap;
+        }
+        .streak-badge .streak-fire { font-size: 1rem; }
+        .streak-badge .streak-num { font-weight: 700; }
+        .streak-badge .streak-label { font-size: 0.7rem; opacity: 0.8; }
+
         .sync-banner {
-            background: var(--secondary-light);
+            background: var(--accent-light);
             text-align: center;
             padding: 0.6rem;
             font-size: 0.85rem;
@@ -623,7 +661,19 @@
 
     <header>
         <div class="container">
-            <h1>Flatchat</h1>
+            <a href="/" class="header-logo" style="display:flex;align-items:center;text-decoration:none">
+                <svg viewBox="0 0 300 75" xmlns="http://www.w3.org/2000/svg" style="height:36px;width:auto">
+                    <circle cx="35" cy="38" r="25" fill="rgba(255,255,255,0.25)"/>
+                    <circle cx="28" cy="33" r="3" fill="white"/><circle cx="35" cy="33" r="3" fill="white"/><circle cx="42" cy="33" r="3" fill="white"/>
+                    <path d="M 45 40 L 50 44 L 54 38" stroke="white" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.7"/>
+                    <text x="75" y="50" font-family="Inter, sans-serif" font-weight="800" font-size="38" fill="white" letter-spacing="-0.5">flatchat</text>
+                </svg>
+            </a>
+            <div class="streak-badge" id="streak-badge" style="display:none">
+                <span class="streak-fire">&#128293;</span>
+                <span class="streak-num" id="streak-num">0</span>
+                <span class="streak-label">day streak</span>
+            </div>
             <div class="lang-selectors">
                 <div class="lang-group">
                     <label for="base-lang">I speak</label>
@@ -653,9 +703,9 @@
         <!-- Translate View -->
         <section id="view-translate" class="view active">
             <div class="translate-direction" id="translate-direction">
-                <span id="dir-from"></span>
+                <span class="dir-lang" id="dir-from"></span>
                 <button class="swap-dir" id="btn-swap-dir" title="Swap direction">&#8644;</button>
-                <span id="dir-to"></span>
+                <span class="dir-lang" id="dir-to"></span>
             </div>
             <input type="text" id="translate-input" placeholder="Enter a word or phrase..." autocomplete="off">
             <button id="btn-translate" class="btn-primary">Translate</button>
@@ -927,10 +977,17 @@
                 btnAuth.textContent = 'Sign out';
 
                 const userDoc = await db.collection('users').doc(user.uid).get();
-                if (userDoc.exists && userDoc.data().settings) {
-                    const s = userDoc.data().settings;
-                    localStorage.setItem(LOCAL_KEY + '_settings_' + user.uid, JSON.stringify(s));
-                    applySettings(s);
+                if (userDoc.exists) {
+                    const data = userDoc.data();
+                    if (data.settings) {
+                        const s = data.settings;
+                        localStorage.setItem(LOCAL_KEY + '_settings_' + user.uid, JSON.stringify(s));
+                        applySettings(s);
+                    }
+                    if (data.streak) {
+                        localStorage.setItem(LOCAL_KEY + '_streak_' + user.uid, JSON.stringify(data.streak));
+                        renderStreak(data.streak);
+                    }
                 }
 
                 const localData = localLoad();
@@ -945,6 +1002,7 @@
                 btnAuth.textContent = 'Sign in';
                 cachedCards = [];
                 if (unsubCards) { unsubCards(); unsubCards = null; }
+                renderStreak(loadStreak());
                 refreshUI();
             }
         });
@@ -1048,6 +1106,75 @@
         return a;
     }
 
+    // ── Streak Tracker ──
+    function getStreakDay() {
+        const now = new Date();
+        // Subtract 3 hours so the day boundary is at 3am local time
+        const adjusted = new Date(now.getTime() - 3 * 60 * 60 * 1000);
+        return adjusted.toISOString().slice(0, 10);
+    }
+
+    function loadStreak() {
+        const key = currentUser ? LOCAL_KEY + '_streak_' + currentUser.uid : LOCAL_KEY + '_streak';
+        const raw = localStorage.getItem(key);
+        if (raw) try { return JSON.parse(raw); } catch {}
+        return { currentStreak: 0, lastActiveDay: null, longestStreak: 0 };
+    }
+
+    function saveStreak(streak) {
+        const key = currentUser ? LOCAL_KEY + '_streak_' + currentUser.uid : LOCAL_KEY + '_streak';
+        localStorage.setItem(key, JSON.stringify(streak));
+        if (currentUser) {
+            db.collection('users').doc(currentUser.uid).set({ streak }, { merge: true });
+        }
+    }
+
+    function updateStreak() {
+        const today = getStreakDay();
+        const streak = loadStreak();
+
+        if (streak.lastActiveDay === today) {
+            renderStreak(streak);
+            return;
+        }
+
+        // Check if yesterday continues the streak
+        const yesterdayDate = new Date(today + 'T00:00:00');
+        yesterdayDate.setDate(yesterdayDate.getDate() - 1);
+        const yesterday = yesterdayDate.toISOString().slice(0, 10);
+
+        if (streak.lastActiveDay === yesterday) {
+            streak.currentStreak++;
+        } else {
+            streak.currentStreak = 1;
+        }
+
+        streak.lastActiveDay = today;
+        if (streak.currentStreak > streak.longestStreak) streak.longestStreak = streak.currentStreak;
+
+        saveStreak(streak);
+        renderStreak(streak);
+    }
+
+    function renderStreak(streak) {
+        const badge = document.getElementById('streak-badge');
+        const numEl = document.getElementById('streak-num');
+        // Check if the streak is still current (last active was today or yesterday)
+        const today = getStreakDay();
+        const yesterdayDate = new Date(today + 'T00:00:00');
+        yesterdayDate.setDate(yesterdayDate.getDate() - 1);
+        const yesterday = yesterdayDate.toISOString().slice(0, 10);
+        const isActive = streak.lastActiveDay === today || streak.lastActiveDay === yesterday;
+
+        if (streak.currentStreak > 0 && isActive) {
+            numEl.textContent = streak.currentStreak;
+            document.querySelector('.streak-label').textContent = streak.currentStreak === 1 ? 'day' : 'day streak';
+            badge.style.display = 'flex';
+        } else {
+            badge.style.display = 'none';
+        }
+    }
+
     // ── Init ──
     document.addEventListener('DOMContentLoaded', () => {
         initAuth();
@@ -1056,6 +1183,7 @@
         initTranslateView();
         initCardsView();
         initReviewView();
+        renderStreak(loadStreak());
     });
 
     function initLangSelectors() {
@@ -1207,6 +1335,7 @@
 
                 resultBox.style.display = 'block';
                 updateCardCountBadge();
+                updateStreak();
             } catch (err) {
                 notify(err.message || 'Translation failed', 'error');
             } finally {
@@ -1459,6 +1588,7 @@
                 const nextReview = intervalDays === 0 ? null : new Date(Date.now() + intervalDays * 86400000).toISOString();
                 Storage.updateCard(cardId, { box: newBox, lastReviewed: new Date().toISOString(), nextReview });
             }
+            updateStreak();
             showReviewSummary();
         } else {
             // Smooth transition: fade out fully, then swap content while invisible, then fade in
