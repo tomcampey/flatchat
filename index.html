@@ -947,40 +947,24 @@
         const userName = document.getElementById('user-name');
         const userPhoto = document.getElementById('user-photo');
 
-        // Handle redirect result on page load (for mobile sign-in)
-        auth.getRedirectResult().then((result) => {
-            if (result && result.user) {
-                console.log('Redirect sign-in successful');
-            }
-        }).catch((err) => {
-            console.error('Redirect result error:', err);
-            if (err.code !== 'auth/popup-closed-by-user') {
-                notify('Sign in error: ' + err.message, 'error');
-            }
-        });
-
         btnAuth.addEventListener('click', async () => {
             if (currentUser) {
                 if (unsubCards) { unsubCards(); unsubCards = null; }
                 await auth.signOut();
             } else {
                 const provider = new firebase.auth.GoogleAuthProvider();
-                // On mobile, go straight to redirect (popups are unreliable)
-                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-                if (isMobile) {
-                    try { await auth.signInWithRedirect(provider); } catch (err) {
-                        notify('Sign in failed: ' + err.message, 'error');
+                btnAuth.textContent = 'Signing in...';
+                btnAuth.disabled = true;
+                try {
+                    await auth.signInWithPopup(provider);
+                } catch (err) {
+                    if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
+                        // User closed the popup, no error needed
+                    } else {
+                        notify('Sign in failed: ' + (err.message || err.code), 'error');
                     }
-                } else {
-                    try {
-                        await auth.signInWithPopup(provider);
-                    } catch (err) {
-                        if (err.code === 'auth/popup-blocked') {
-                            try { await auth.signInWithRedirect(provider); } catch {}
-                        } else if (err.code !== 'auth/popup-closed-by-user') {
-                            notify('Sign in failed: ' + err.message, 'error');
-                        }
-                    }
+                    btnAuth.textContent = 'Sign in';
+                    btnAuth.disabled = false;
                 }
             }
         });
