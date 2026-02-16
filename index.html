@@ -576,8 +576,13 @@
                 await auth.signOut();
             } else {
                 const provider = new firebase.auth.GoogleAuthProvider();
+                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
                 try {
-                    await auth.signInWithPopup(provider);
+                    if (isMobile) {
+                        await auth.signInWithRedirect(provider);
+                    } else {
+                        await auth.signInWithPopup(provider);
+                    }
                 } catch (err) {
                     if (err.code !== 'auth/popup-closed-by-user') {
                         notify('Sign in failed: ' + err.message, 'error');
