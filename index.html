@@ -947,6 +947,17 @@
         const userName = document.getElementById('user-name');
         const userPhoto = document.getElementById('user-photo');
 
+        // Handle redirect result on page load (for mobile sign-in)
+        auth.getRedirectResult().then((result) => {
+            if (result && result.user) {
+                notify('Signed in!');
+            }
+        }).catch((err) => {
+            if (err.code !== 'auth/popup-closed-by-user') {
+                notify('Sign in error: ' + (err.message || err.code), 'error');
+            }
+        });
+
         btnAuth.addEventListener('click', async () => {
             if (currentUser) {
                 if (unsubCards) { unsubCards(); unsubCards = null; }
@@ -955,12 +966,16 @@
                 const provider = new firebase.auth.GoogleAuthProvider();
                 btnAuth.textContent = 'Signing in...';
                 btnAuth.disabled = true;
+                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
                 try {
-                    await auth.signInWithPopup(provider);
-                } catch (err) {
-                    if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
-                        // User closed the popup, no error needed
+                    if (isMobile) {
+                        // Redirect works better on mobile — popup can't communicate back
+                        await auth.signInWithRedirect(provider);
                     } else {
+                        await auth.signInWithPopup(provider);
+                    }
+                } catch (err) {
+                    if (err.code !== 'auth/popup-closed-by-user' && err.code !== 'auth/cancelled-popup-request') {
                         notify('Sign in failed: ' + (err.message || err.code), 'error');
                     }
                     btnAuth.textContent = 'Sign in';
