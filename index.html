@@ -897,18 +897,24 @@
         const userName = document.getElementById('user-name');
         const userPhoto = document.getElementById('user-photo');
 
+        // Handle redirect result on page load (for mobile sign-in)
+        auth.getRedirectResult().catch(() => {});
+
         btnAuth.addEventListener('click', async () => {
             if (currentUser) {
                 if (unsubCards) { unsubCards(); unsubCards = null; }
                 await auth.signOut();
             } else {
                 const provider = new firebase.auth.GoogleAuthProvider();
-                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
                 try {
-                    if (isMobile) { await auth.signInWithRedirect(provider); }
-                    else { await auth.signInWithPopup(provider); }
+                    await auth.signInWithPopup(provider);
                 } catch (err) {
-                    if (err.code !== 'auth/popup-closed-by-user') notify('Sign in failed: ' + err.message, 'error');
+                    if (err.code === 'auth/popup-blocked' || err.code === 'auth/popup-closed-by-user') {
+                        // Fallback to redirect if popup fails (common on mobile)
+                        try { await auth.signInWithRedirect(provider); } catch {}
+                    } else if (err.code !== 'auth/popup-closed-by-user') {
+                        notify('Sign in failed: ' + err.message, 'error');
+                    }
                 }
             }
         });
