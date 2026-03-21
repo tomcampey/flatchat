@@ -357,6 +357,13 @@
         .box-2 { background: var(--accent-light); color: var(--accent-dark); }
         .box-3 { background: #ddf5f3; color: #2fa89e; }
         .box-4 { background: #d0f0ed; color: #1f8a81; }
+        .box-5 { background: #e6faf9; color: #18726a; }
+        .box-6 { background: #dcf7f5; color: #116059; }
+        .box-7 { background: #cff4f1; color: #0d4f48; }
+        .box-8 { background: #c0efec; color: #0a3f39; }
+        .box-9 { background: #b0eae6; color: #083330; }
+        .box-10 { background: #9ee4df; color: #062927; }
+        .box-11 { background: #8ddbd5; color: #04201e; }
         .card-item .card-actions {
             display: flex;
             gap: 0.3rem;
@@ -446,15 +453,16 @@
         /* ── Bucket Overview (Review) ── */
         .bucket-overview {
             display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-top: 1.5rem;
+            flex-wrap: nowrap;
+            overflow-x: auto;
         }
         .bucket-card {
             flex: 1;
-            min-width: 90px;
+            min-width: 52px;
             text-align: center;
-            padding: 0.7rem 0.4rem;
+            padding: 0.7rem 0.3rem;
             border-radius: var(--radius);
             border: 1px solid #eee;
             background: #fafbfc;
@@ -469,11 +477,12 @@
             margin-top: 0.1rem;
         }
         .bucket-card .bucket-label {
-            font-size: 0.7rem;
+            font-size: 0.55rem;
             font-weight: 600;
             margin-top: 0.2rem;
             text-transform: uppercase;
             letter-spacing: 0.03em;
+            white-space: nowrap;
         }
         .bucket-card.b0 { border-color: var(--secondary); background: var(--secondary-light); }
         .bucket-card.b0 .bucket-count { color: var(--primary); }
@@ -490,6 +499,27 @@
         .bucket-card.b4 { border-color: #2fa89e; background: #d0f0ed; }
         .bucket-card.b4 .bucket-count { color: #1f8a81; }
         .bucket-card.b4 .bucket-label { color: #1f8a81; }
+        .bucket-card.b5 { border-color: #b8ece9; background: #e6faf9; }
+        .bucket-card.b5 .bucket-count { color: #18726a; }
+        .bucket-card.b5 .bucket-label { color: #18726a; }
+        .bucket-card.b6 { border-color: #a0e4e0; background: #dcf7f5; }
+        .bucket-card.b6 .bucket-count { color: #116059; }
+        .bucket-card.b6 .bucket-label { color: #116059; }
+        .bucket-card.b7 { border-color: #86d9d4; background: #cff4f1; }
+        .bucket-card.b7 .bucket-count { color: #0d4f48; }
+        .bucket-card.b7 .bucket-label { color: #0d4f48; }
+        .bucket-card.b8 { border-color: #6bcec8; background: #c0efec; }
+        .bucket-card.b8 .bucket-count { color: #0a3f39; }
+        .bucket-card.b8 .bucket-label { color: #0a3f39; }
+        .bucket-card.b9 { border-color: #50c3bb; background: #b0eae6; }
+        .bucket-card.b9 .bucket-count { color: #083330; }
+        .bucket-card.b9 .bucket-label { color: #083330; }
+        .bucket-card.b10 { border-color: #35b8af; background: #9ee4df; }
+        .bucket-card.b10 .bucket-count { color: #062927; }
+        .bucket-card.b10 .bucket-label { color: #062927; }
+        .bucket-card.b11 { border-color: #2aa49b; background: #8ddbd5; }
+        .bucket-card.b11 .bucket-count { color: #04201e; }
+        .bucket-card.b11 .bucket-label { color: #04201e; }
 
         /* ── Flashcard (Review) ── */
         .flashcard {
@@ -639,6 +669,102 @@
         }
         .btn-danger-outline:hover { color: var(--danger); border-color: var(--danger); }
 
+        /* ── Benchmark Progress ── */
+        .benchmark-section {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #eee;
+        }
+        .benchmark-section h4 {
+            font-size: 0.9rem;
+            color: #555;
+            margin: 0 0 1rem;
+        }
+        .benchmark-bar {
+            margin-bottom: 0.8rem;
+        }
+        .benchmark-bar .benchmark-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            margin-bottom: 0.3rem;
+        }
+        .benchmark-bar .benchmark-label .benchmark-name {
+            font-weight: 600;
+            color: #555;
+        }
+        .benchmark-bar .benchmark-label .benchmark-count {
+            color: #999;
+        }
+        .benchmark-bar .benchmark-track {
+            height: 8px;
+            background: #f1f3f5;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .benchmark-bar .benchmark-fill {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        /* ── Info View ── */
+        .info-card {
+            background: #fafbfc;
+            border: 1px solid #eee;
+            border-radius: var(--radius);
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        .info-card h3 {
+            font-size: 1rem;
+            margin: 0 0 0.8rem;
+            color: var(--accent-dark);
+        }
+        .info-card p {
+            font-size: 0.85rem;
+            color: #555;
+            margin: 0 0 0.5rem;
+            line-height: 1.5;
+        }
+        .info-card p:last-child { margin-bottom: 0; }
+        .info-bucket-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .info-bucket-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.85rem;
+            color: #555;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .info-bucket-list li:last-child { border-bottom: none; }
+        .info-bucket-list .bucket-tag {
+            font-weight: 600;
+            min-width: 80px;
+            flex-shrink: 0;
+        }
+        .info-milestone-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .info-milestone-list li {
+            padding: 0.6rem 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.85rem;
+            color: #555;
+        }
+        .info-milestone-list li:last-child { border-bottom: none; }
+        .info-milestone-list .milestone-num {
+            font-weight: 700;
+            color: var(--accent-dark);
+        }
+
         @media (max-width: 576px) {
             body > header .container { flex-direction: column; align-items: stretch; }
             .lang-selectors { flex-wrap: wrap; }
@@ -698,6 +824,7 @@
             <button data-view="translate" class="active">Translate</button>
             <button data-view="cards">My Cards <span id="card-count-badge"></span></button>
             <button data-view="review">Review</button>
+            <button data-view="info">Info</button>
         </nav>
 
         <!-- Translate View -->
@@ -728,10 +855,14 @@
                     <button class="btn-primary" id="btn-manual-add" style="width:auto;padding:0.45rem 1rem">Add</button>
                 </div>
             </div>
-            <div class="cards-header">
-                <div><strong id="cards-total">0 cards</strong></div>
-                <div style="display:flex;gap:0.5rem;align-items:center">
-                    <select id="cards-lang-filter"><option value="all">All languages</option></select>
+            <div class="cards-header" style="flex-wrap:wrap;gap:0.5rem;">
+                <div style="display:flex;gap:0.5rem;align-items:center;flex:1;min-width:0;">
+                    <strong id="cards-total">0 cards</strong>
+                    <input type="text" id="cards-search" placeholder="Search cards…" style="margin:0;padding:0.4rem 0.6rem;font-size:0.85rem;border-radius:8px;flex:1;min-width:0;">
+                </div>
+                <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;">
+                    <select id="cards-lang-filter" style="margin:0;padding:0.4rem 0.6rem;font-size:0.85rem;border-radius:8px;"><option value="all">All languages</option></select>
+                    <select id="cards-box-filter" style="margin:0;padding:0.4rem 0.6rem;font-size:0.85rem;border-radius:8px;"><option value="all">All boxes</option></select>
                     <button id="btn-start-review" class="btn-outline" style="margin:0;white-space:nowrap">Start Review</button>
                 </div>
             </div>
@@ -752,7 +883,7 @@
                     <option value="all">All languages</option>
                 </select>
             </div>
-            <div id="bucket-overview" class="bucket-overview"></div>
+            <div id="benchmark-progress" class="benchmark-section" style="display:none"></div>
             <div id="review-area">
                 <div id="review-empty" class="empty-state" style="display:none">
                     <p>No cards due for review right now.</p>
@@ -779,6 +910,18 @@
                         <button class="btn-didnt" id="btn-didnt">I didn't know it</button>
                         <button class="btn-knew" id="btn-knew">I knew it!</button>
                     </div>
+                    <div id="review-edit-area" style="display:none;margin-top:0.75rem;">
+                        <div class="card-edit-form">
+                            <input type="text" id="review-edit-front" placeholder="Front">
+                            <span style="color:#bbb">&#x2192;</span>
+                            <input type="text" id="review-edit-back" placeholder="Back">
+                            <button id="btn-review-save-edit" class="btn-primary" style="width:auto;padding:0.3rem 0.7rem;font-size:0.8rem">Save</button>
+                            <button id="btn-review-cancel-edit" class="btn-outline" style="padding:0.3rem 0.7rem;font-size:0.8rem">Cancel</button>
+                        </div>
+                    </div>
+                    <div style="text-align:center;margin-top:0.5rem;">
+                        <button id="btn-review-edit" style="background:none;border:none;cursor:pointer;font-size:0.9rem;color:#aaa;" title="Edit card">&#x270E; Edit card</button>
+                    </div>
                 </div>
                 <div id="review-summary" class="review-summary" style="display:none">
                     <h3>Session Complete!</h3>
@@ -786,6 +929,32 @@
                     <p id="review-summary-text"></p>
                     <button id="btn-review-again" class="btn-outline">Review Again</button>
                 </div>
+                <div id="bucket-overview" class="bucket-overview"></div>
+            </div>
+        </section>
+
+        <!-- Info View -->
+        <section id="view-info" class="view">
+            <div class="info-card">
+                <h3>How the Buckets Work</h3>
+                <p>Flatchat uses a spaced repetition system with 5 buckets. Cards move up when you answer correctly in both directions (your language and target language), and drop back to New if either direction is wrong.</p>
+                <ul class="info-bucket-list">
+                    <li><span class="bucket-tag" style="color:var(--primary)">New</span> Review immediately — cards you haven't learned yet</li>
+                    <li><span class="bucket-tag" style="color:var(--primary-dark)">Learning</span> Review after 1 day — just getting started</li>
+                    <li><span class="bucket-tag" style="color:var(--accent-dark)">Familiar</span> Review after 3 days — you're getting the hang of it</li>
+                    <li><span class="bucket-tag" style="color:#2fa89e">Known</span> Review after 7 days — solid knowledge</li>
+                    <li><span class="bucket-tag" style="color:#1f8a81">Mastered</span> Review after 14 days — well learned!</li>
+                </ul>
+            </div>
+            <div class="info-card">
+                <h3>Language Benchmarks</h3>
+                <p>How many words do you need to know to use a language?</p>
+                <ul class="info-milestone-list">
+                    <li><span class="milestone-num">500 words</span> — enough to navigate tourist situations and basic introductions</li>
+                    <li><span class="milestone-num">1,000–3,000 words</span> — conversational level, handling everyday situations like shopping, asking how people are, discussing your day</li>
+                    <li><span class="milestone-num">3,000 words</span> — 95% coverage of everyday texts and conversations</li>
+                    <li><span class="milestone-num">5,000 words</span> — about 98% coverage, allowing accurate learning from context</li>
+                </ul>
             </div>
         </section>
     </main>
@@ -833,9 +1002,13 @@
         { code: 'he', name: 'Hebrew' }
     ];
 
-    const LEITNER_INTERVALS = [0, 1, 3, 7, 14];
-    const BOX_LABELS = ['New', 'Learning', 'Familiar', 'Known', 'Mastered'];
+    const LEITNER_INTERVALS = [0, 1, 3, 7, 14, 30, 60, 120, 240, 480, 960, 1920];
+    const BOX_LABELS = ['New', 'Learning', 'Familiar', 'Known', 'Mastered',
+        '1 Month', '2 Months', '4 Months', '8 Months', '16 Months', '2 Years', '5 Years'];
     const LOCAL_KEY = 'flatchat_data';
+
+    // ── Indonesian Word List (top 5000 by frequency) ──
+    const INDONESIAN_WORDS = ['yang','dan','di','dengan','ini','untuk','dari','itu','dalam','tidak','akan','pada','juga','ke','bisa','adalah','ada','atau','tersebut','oleh','menjadi','dapat','karena','sudah','sebagai','kita','tahun','lebih','orang','saya','Indonesia','mereka','harus','telah','satu','saat','seperti','kepada','bahwa','hanya','masih','sangat','banyak','kata','para','secara','lain','Anda','masyarakat','saja','merupakan','melakukan','baru','kami','baik','bagi','memiliki','hari','beberapa','dia','tak','dilakukan','hal','Jakarta','atas','belum','maka','lalu','ia','dua','lagi','rumah','semua','membuat','pun','Namun','terhadap','mengatakan','besar','tentang','agar','sehingga','waktu','sampai','hingga','terjadi','memberikan','Di','sebuah','yaitu','seorang','setelah','salah','sama','negara','Saya','anak','serta','Dalam','bukan','cukup','menggunakan','sendiri','tapi','daerah','kembali','pemerintah','berbagai','dunia','sekitar','Untuk','harga','Dengan','antara','selama','suatu','apa','perusahaan','Islam','jika','langsung','diri','jalan','pertama','Kami','melalui','pernah','kemudian','Allah','kali','maupun','aku','perlu','anda','hidup','namun','tempat','tinggi','Rp','ketika','lainnya','kerja','mulai','setiap','tetap','tetapi','bulan','Selain','pihak','digunakan','Jika','PT','Pada','proses','Ia','Karena','hasil','manusia','masuk','memang','terus','mampu','adanya','Tapi','masalah','tanpa','tiga','depan','kedua','pendidikan','Hal','informasi','katanya','kota','sistem','bersama','ingin','Kota','Menurut','Sementara','jadi','sejak','kalau','mendapatkan','selalu','hukum','luar','bagian','mencapai','sekolah','cara','juta','berada','warga','berhasil','program','Mereka','masa','mau','melihat','paling','sekarang','seluruh','tingkat','termasuk','air','data','mengalami','Dan','sesuai','Jawa','dana','kegiatan','Setelah','kecil','mendapat','Kalau','jumlah','kasus','mungkin','penelitian','sedang','Ketua','akhirnya','mengenai','pasar','per','Presiden','bidang','produk','semakin','tanah','jauh','sebesar','bahan','jam','lama','kini','pembangunan','sekali','wilayah','mobil','nama','Dia','Ini','bahkan','malam','siswa','tahu','bekerja','demikian','kurang','mudah','pula','punya','terkait','yg','jelas','negeri','Kabupaten','Kepala','Saat','biaya','kondisi','nilai','tanggal','lingkungan','lokasi','mempunyai','persen','sejumlah','wanita','anggota','diberikan','ekonomi','kesehatan','sebelum','Jadi','datang','menunjukkan','pekerjaan','peserta','akhir','yakni','acara','berbeda','tim','Tidak','Timur','Yang','begitu','kelas','menarik','utama','Pemerintah','Rumah','bahasa','belajar','keluarga','sebelumnya','usaha','bentuk','membantu','pemain','posisi','terdapat','bagaimana','jangan','segera','sumber','benar','mana','menurut','penting','sering','Dari','Tuhan','barang','berjalan','buku','kelompok','menit','dulu','kehidupan','meningkatkan','muncul','terlihat','Barat','akibat','berarti','kebutuhan','korban','mencoba','merasa','produksi','awal','berharap','menerima','penyakit','sebanyak','terakhir','umum','Bank','mahasiswa','menemukan','ruang','tubuh','uang','Ada','Inggris','alat','biasa','bila','bisnis','dekat','jenis','mengaku','mengikuti','menjelaskan','miliar','saham','AS','Selatan','luas','menyatakan','naik','rasa','siap','terlalu','kualitas','kuat','pihaknya','rakyat','terutama','tujuan','ujar','Para','Senin','agama','desa','memberi','meminta','mencari','pukul','tentu','apakah','berdasarkan','berlangsung','cepat','makan','mendukung','mesin','tengah','terbaik','ujarnya','asal','dirinya','pelaksanaan','perempuan','sedikit','suara','ya','bawah','disebut','guru','kawasan','muda','soal','tangan','tugas','unit','Desa','dasar','media','menuju','pasti','politik','rendah','sementara','umat','Bahkan','kaki','kasih','laut','memilih','panjang','Januari','Ketika','bangsa','calon','film','hubungan','kendaraan','lanjut','si','tinggal','Itu','Tak','ilmu','kamar','kemampuan','ketiga','menyebabkan','misalnya','sebagian','sekaligus','Negara','biasanya','buat','foto','hati','kemungkinan','kunci','mata','mengembangkan','nanti','pesawat','pusat','teknologi','Jepang','Negeri','Oleh','Sedangkan','Sehingga','Semua','Tahun','bagus','budaya','kamu','keluar','kemarin','kesempatan','khusus','lahan','menjaga','minyak','nasional','pencarian','tertentu','tua','Daerah','Kecamatan','Menteri','Nasional','berikut','daya','diharapkan','diketahui','industri','investasi','kinerja','laporan','musim','of','pulang','sektor','sempat','sisi','ternyata','Bali','Beberapa','Meski','Utara','and','darah','dilaksanakan','fasilitas','jawab','lima','pelaku','pelayanan','proyek','sedangkan','sesuatu','tepat','terdiri','upaya','Kementerian','Misalnya','Padahal','Selasa','alam','boleh','daftar','hadir','ikut','kebijakan','membawa','memenuhi','metode','pengembangan','penuh','pertemuan','sang','Amerika','II','Seperti','Tetapi','anggaran','bersifat','berupa','buah','dikenal','empat','hak','ibu','kantor','khususnya','mengambil','mengetahui','pria','sakit','sebenarnya','sepanjang','siapa','total','Eropa','I','Malaysia','Provinsi','Salah','Umum','keras','lembaga','listrik','makanan','pengalaman','pengetahuan','perkembangan','polisi','seseorang','sosial','Kita','Program','RI','dimulai','justru','kenaikan','kepala','menghasilkan','meningkat','operasi','segala','turun','September','The','kaum','keputusan','korupsi','organisasi','perhatian','saling','Aku','April','Bupati','Dinas','Kerja','arah','asing','bantuan','bayi','berasal','dianggap','diterima','internasional','itulah','juara','konsep','langkah','lewat','memperoleh','mendatang','milik','minggu','pagi','pertanyaan','pertumbuhan','perubahan','sebagaimana','selain','semangat','suka','sukses','warna','Aceh','Apalagi','Sebab','Sebagai','WIB','aktif','apabila','bank','berat','berkembang','dibuat','emas','guna','keamanan','komunikasi','konsumen','membangun','menulis','motor','permintaan','pilihan','ribu','sini','sulit','triliun','yakin','DPR','Harga','Ibu','Jumat','Penelitian','US','aman','dampak','diperlukan','iklan','jatuh','manajemen','menolak','pajak','perjalanan','pertandingan','poin','Asia','Desember','Juni','Kemudian','November','Pendidikan','Perusahaan','Polri','Surabaya','Tengah','bermain','berusaha','diperoleh','internet','kepentingan','keuangan','melaksanakan','melawan','membuka','menambahkan','menciptakan','mendengar','menentukan','menghadapi','menyediakan','pasangan','sehat','selesai','setempat','tegas','tidur','usia','Badan','Bagi','Banyak','Bila','Juli','Kamis','Muhammad','Rabu','Selama','antar','ataupun','belakang','gelar','kekuatan','lokal','mantan','mati','mengeluarkan','meraih','pergi','petani','positif','tahap','Acara','Belanda','Partai','Universitas','Yogyakarta','aplikasi','bergerak','demi','dibutuhkan','gol','jaringan','level','mengakui','menikmati','murah','musik','pejabat','peningkatan','pintu','rangka','rencana','sambil','sarana','satunya','sel','situs','teman','Hasil','Kamar','Komisi','Oktober','Sebelumnya','Seorang','Wakil','alasan','diikuti','faktor','hampir','jual','kepercayaan','lapangan','menambah','menimbulkan','menjawab','menyampaikan','selanjutnya','senang','surat','tampak','tujuh','Agung','Arab','Baru','Direktur','Jalan','Maka','Nabi','Papua','aja','apapun','banjir','berapa','buruk','dibandingkan','dijadikan','dilihat','ditemukan','efektif','gambar','gerakan','inilah','karya','kematian','kg','lakukan','lengkap','menilai','penggunaan','pola','sana','terasa','tersedia','tindakan','Agustus','Bandung','Hotel','Ilmu','Malang','UU','bangunan','berlaku','berpikir','bertahan','dibangun','dikeluarkan','dimana','duduk','enam','energi','gak','gaya','hotel','ikan','macam','mahal','membaca','meski','miskin','modal','pembayaran','pemerintahan','pemilik','pemimpin','penerbangan','pengguna','permasalahan','petugas','resmi','tambahan','target','Adapun','Lebih','Pusat','Serikat','Tim','aktivitas','bakal','beban','bebas','beliau','berdiri','cerita','dijual','hujan','istri','izin','kapal','kerjasama','materi','mempengaruhi','mengandung','meninggal','menyebut','meter','model','nyaman','partai','penduduk','pengawasan','penjualan','peran','perbedaan','sebab','seharusnya','tampil','teknik','televisi','tenaga','Al','Berikut','DPRD','Demikian','Gubernur','JAKARTA','Liga','Mei','Secara','Yesus','aksi','angka','berita','butuh','diberi','dinilai','ditetapkan','gangguan','infrastruktur','jakarta','jarak','jasa','kan','kanan','kapasitas','karyawan','kontrak','maju','melainkan','membutuhkan','mengungkapkan','mengurangi','nantinya','panas','pegawai','pengusaha','penumpang','perawatan','perdagangan','pernyataan','pikiran','sebagainya','sepeda','standar','tersangka','the','tiket','tumbuh','ujian','BBM','Hari','Hukum','Informasi','Kantor','Maret','Minggu','Sebelum','Tbk','ahli','aturan','babak','barat','dipakai','disampaikan','disebabkan','impor','investor','jiwa','kalangan','keadaan','kiri','kredit','krisis','lantai','luka','mencegah','menegaskan','menjalankan','menurunkan','merah','otak','pemahaman','pendapat','pendekatan','pengelolaan','penurunan','percaya','permainan','persoalan','pertanian','publik','sebelah','sederhana','sejarah','senilai','serangan','sikap','sore','studi','tanaman','terang','tokoh','ukuran','walaupun','Apa','Apakah','Dua','KPK','KPU','Kristen','Satu','Sekarang','Sumatera','Toyota','anaknya','badan','balik','berbasis','berfungsi','berhenti','bernama','bumi','bunga','cinta','contoh','daripada','dihasilkan','diminta','diperkirakan','dukungan','kalian','kehilangan','kuliah','kulit','lihat','maksimal','memahami','memakai','pangan','perguruan','rambut','semuanya','serius','strategis','suami','tamu','tradisional','wajah','Cari','Februari','Gedung','Lembaga','Masyarakat','Memang','Menurutnya','Pasalnya','Pulau','SBY','Sabtu','Semarang','apalagi','bencana','berakhir','beras','bersih','bertemu','berubah','cabang','dolar','dosen','ekspor','fungsi','kartu','kategori','kesejahteraan','kesulitan','ketentuan','ketua','klub','komputer','lomba','lupa','maaf','mandi','melanjutkan','membeli','membentuk','mengingat','meninggalkan','menjadikan','menunggu','menyebutkan','minimal','obat','pelatihan','pengaruh','peralatan','pinjaman','ruangan','tadi','tantangan','tergantung','terkenal','ton','ulang','usai','wartawan','wisata','Ahmad','Bagaimana','Begitu','Hanya','Hingga','III','Selanjutnya','Sistem','aspek','benda','berbicara','bola','dahulu','daun','desain','dikatakan','dimiliki','dokter','gas','gratis','hutan','kecelakaan','kemenangan','kompetisi','laga','mengajak','militer','minta','minum','nyata','online','pakai','pakaian','pandangan','pelajaran','pemilu','penjelasan','perilaku','putih','ringan','saksi','samping','supaya','tau','teori','terbesar','terjadinya','umumnya','Agus','Anak','Berbagai','Bisa','China','Jangan','Kata','Kedua','Kegiatan','Kondisi','Madrid','Manajemen','Pak','Polda','SMA','Tenaga','Ternyata','Ya','alias','beli','berikutnya','berpengaruh','bertanya','berusia','blog','daging','delapan','detik','dibanding','digelar','dimaksud','kekuasaan','kilometer','kopi','layanan','mengadakan','mengatasi','nomor','nya','panitia','pembelajaran','pembuatan','pemeriksaan','pendapatan','penghargaan','pimpinan','potensi','pribadi','profesional','rapat','rusak','seni','takut','tekanan','terbaru','terbatas','terbuka','terbukti','terletak','transaksi','A','Akan','Data','Ekonomi','ID','Jumlah','Korea','Lampung','Meskipun','Mungkin','PLN','Sebuah','Tinggi','ajaran','analisis','artikel','arus','batu','bekas','bertanggung','buruh','coba','cuma','diambil','diantaranya','final','gagal','global','internal','jantung','lagu','latihan','makin','malah','memanfaatkan','memperhatikan','memutuskan','menahan','mengubah','meskipun','muslim','olahraga','paket','pekan','peluang','peneliti','peraturan','perekonomian','periode','perumahan','pohon','relatif','sesama','terlebih','tiap','titik','unggul','ungkapnya','website','Agama','BUMN','Bekasi','DKI','Imam','Inilah','Internasional','Jerman','Karya','Kini','Medan','Muslim','NU','New','Pengadilan','Sejak','Sekretaris','Teknologi','Tenggara','Tentu','UN','Utama','Waktu','Yudhoyono','agak','akses','alami','ayat','berisi','berkata','bilang','bin','bukti','cocok','diduga','fokus','format','gedung','gereja','ide','jelasnya','kampus','kebenaran','kecuali','kering','keseluruhan','ketat','kursi','manfaat','melibatkan','mempertahankan','menanyakan','mendorong','menerapkan','mengajukan','mengapa','mengingatkan','menteri','menyelesaikan','namanya','nggak','pelanggaran','pembelian','pemberian','pemilihan','penulis','peringatan','perjuangan','raya','seleksi','semacam','sembilan','siang','status','terima','tes','timur','tipe','to','toko','turut','udah','video','Agar','Akhirnya','Artinya','Bambang','Berdasarkan','Besar','Gunung','Lalu','PNS','Rasulullah','SD','Sampai','Semoga','Singapura','TNI','VIVAnews','administrasi','area','artinya','asli','bangga','berencana','bertujuan','cenderung','diatas','didukung','dihadiri','dikembangkan','ditutup','fisik','for','ibadah','individu','jalur','jangka','kanker','karakter','kekerasan','kenapa','kesalahan','khas','khawatir','kompetensi','koordinasi','lahir','layak','massa','meliputi','menawarkan','mengatur','mengenal','mengerti','mengirimkan','menyadari','menyerahkan','or','pabrik','pasien','pekerja','pengadaan','peristiwa','pindah','presiden','setuju','signifikan','strategi','sungai','tangga','tarif','tata','timbul','transportasi','volume','Bandara','Bukan','Center','Guru','Jenderal','Keuangan','Mahkamah','Mantan','Orang','Pemilu','Pemkab','Piala','Sebagian','Sebanyak','Sulawesi','Thailand','angkutan','ayam','baca','bangun','banyaknya','berani','bergabung','berkaitan','berkualitas','bertambah','berupaya','buka','bukanlah','bursa','diakui','diatur','dikutip','dilanjutkan','diserahkan','disini','ditentukan','haji','hijau','ilmiah','istilah','jabatan','kalah','kayu','keduanya','kenal','kereta','kerusakan','keterampilan','keuntungan','kewajiban','kimia','kisah','klik','kok','lemah','lepas','lowongan','makna','menempatkan','menengah','menjamin','menjelang','pendukung','penyelenggaraan','perangkat','perbaikan','ponsel','putri','rasanya','rupiah','sapi','sifat','solusi','sosok','stabil','tertinggi','ulama','unsur','wajib','zaman','Administrasi','Afrika','Air','Bidang','Buku','Demokrat','Denpasar','Dewan','Dr','Italia','Koperasi','Lingkungan','Masih','Nusantara','Pembangunan','Pertanian','Pontianak','Proses','Raya','Sekolah','Setiap','Solo','Sulut','Teknik','Yayasan','ajang','akal','angin','antaranya','api','awalnya','bakar','bantu','berbahaya','berhubungan','bermanfaat','bicara','catatan','demokrasi','detail','diantara','dimanfaatkan','disebutkan','ditawarkan','diterapkan','efek','fitur','gula','hakim','halaman','harapan','harganya','indah','indeks','info','ingat','jadwal','jarang','kabar','kejadian','komponen','lah','lawan','lebar','memicu','memperbaiki','menekan','mengerjakan','menikah','menjual','menutup','minat','non','pelatih','pendaftaran','penderita','penerimaan','perbuatan','pilih','puasa','raja','rutin','sebut','seiring','sekedar','seks','sempurna','sepenuhnya','seputar','suasana','swasta','tanggung','tentunya','tersendiri','utara','zat','Ali','Android','Bahasa','Beliau','Bisnis','Cina','Dahlan','Dijual','Fakultas','India','Jaya','Kesehatan','Lokasi','Peraturan','Polisi','Produk','Raja','SMS','Saudi','Sumut','Taman','Tangerang','Terima','Tidur','Walaupun','Warga','arti','ayah','beragam','berkunjung','beroperasi','bikin','bintang','bus','cantik','cuaca','dibawa','dibawah','dilansir','dinding','dipimpin','disiplin','diskusi','ditangani','dokumen','enggan','generasi','grup','hadits','hebat','hendak','hilang','inflasi','isu','jaminan','jawaban','kalimat','kampanye','karet','keberadaan','kebudayaan','keempat','keinginan','kekayaan','kekurangan','kelebihan','kepolisian','ketimbang','keunggulan','komunitas','matahari','melanggar','melindungi','memastikan','membayar','membuktikan','memerlukan','memulai','memungkinkan','menempati','menganggap','mengelola','menguasai','mengumumkan','menjalani','menu','menyiapkan','mewah','modern','motivasi','optimal','pembinaan','penilaian','peranan','perdana','pers','pesan','prinsip','produsen','pulau','puncak','rekan','remaja','sayang','sebaiknya','selamat','seminar','sengaja','sesungguhnya','shalat','singkat','tambahnya','tanda','tercapai','tewas','tubuhnya','undangan','utk','versi','Abdullah','Abu','Apabila','Australia','BI','DIY','Danau','Departemen','Dunia','Internet','Jatim','Kalimantan','Kristus','Mahasiswa','Mas','PSSI','Palembang','Perdagangan','Pertama','Pimpinan','SWT','Sang','Sudah','TV','Tingkat','Usaha','agenda','ancaman','apartemen','atlet','bakteri','bandara','batas','belakangan','bensin','berhak','berkisar','bersaing','beserta','betapa','cedera','cerdas','dalamnya','dewasa','diadakan','didampingi','dini','dipercaya','diperhatikan','diselenggarakan','diskon','ditujukan','ekor','era','forum','ga','game','garis','gubernur','habis','hamil','hewan','hiburan','ialah','istrinya','jajaran','kadar','kampung','kebahagiaan','kebanyakan','kebiasaan','kertas','kode','komentar','komitmen','konflik','kontraktor','kriteria','kritis','lampu','layar','lintas','lulusan','manis','manual','marah','masjid','membantah','menampilkan','menang','menangani','menanggapi','menangis','mendirikan','mengajar','mengangkat','mengganti','menggantikan','menghadirkan','mengharapkan','menghindari','mengisi','mengunjungi','menuntut','menyangkut','menyelamatkan','menyusul','merusak','mewujudkan','narkoba','nasabah','negatif','obyek','pandang','panggung','pantai','pedagang','pelajar','pembiayaan','pemuda','penampilan','pendek','pengelola','penonton','peringkat','permukaan','perseroan','pertahanan','pokok','putusan','reformasi','ruas','sahabat','sampel','sanksi','selatan','semoga','sewa','sosialisasi','staf','stasiun','suaminya','subsidi','suci','taman','tambang','tanggapan','tepung','terpilih','tertarik','tiba','tuanya','tulisan','udara','ujung','ungkap','upacara','urutan','web','Abdul','Anwar','Banten','Bapak','Bogor','Bumi','HAM','Honda','Industri','Iran','Jokowi','Juga','Karenanya','Kepolisian','Komunikasi','Kuala','Link','Luar','Messi','Metro','Mobil','Muda','Nah','Nego','Obama','PP','Padang','Pantai','Pasar','Persempit','Pertamina','Real','SMP','Sejumlah','Sekitar','Siapa','Spanyol','Sri','Sungai','Suzuki','TKI','Terkait','Tiga','Tujuan','UI','Uni','Unit','United','al','aneh','ayahnya','bahagia','baku','berikan','berlatih','berperan','bersamaan','bertugas','berwarna','cari','damai','dapatkan','diam','dibilang','dibuka','dihadapi','dilengkapi','dinyatakan','dipilih','dirasakan','disediakan','disesuaikan','ditambah','dll','email','engkau','fakta','gempa','gunakan','halnya','hitam','isi','jurusan','kalinya','karir','kau','kebakaran','kesadaran','kesepakatan','kesuksesan','keterangan','konsumsi','kontrol','kunjungan','lancar','lari','lulus','lumpur','medis','mekanisme','melarang','melayani','melewati','memasuki','membahas','memperkirakan','memperkuat','mencetak','mengalahkan','mengarah','menggelar','menghargai','menghubungi','mengirim','menguntungkan','menonton','menunjukan','menurun','menyaksikan','menyambut','menyerang','menyusun','moral','muka','mulus','niat','normal','on','orangtua','padahal','palsu','pelanggan','penerapan','pengertian','pengurus','perang','perjanjian','perpustakaan','pikir','profesi','risiko','sebulan','sehari','seluas','serupa','setidaknya','sidang','sipil','situasi','skor','slideshow','sudut','suhu','susu','tambah','tanya','tawaran','tercatat','terlibat','terpaksa','timnas','truk','tuan','umur','unik','wisatawan','APBN','Alam','Anggota','Atau','B','BPK','Bangka','Berbeda','Bintang','Hakim','Ibnu','Kebijakan','Kelompok','Keputusan','League','Liverpool','MA','MU','Manado','Media','Microsoft','PC','PM','Perumahan','RS','Ramadhan','Rasul','Republik','Roma','Sejauh','Sektor','Semakin','Sosial','Studi','Sultan','Sumber','Susilo','Tentang','Terdapat','University','Usai','Walikota','Yunani','adat','adil','akademik','amat','anti','aparat','baiknya','batang','belanja','benih','berbentuk','bercerita','berguna','berkurang','biru','cahaya','cairan','citra','dah','dapur','darurat','dasarnya','de','dibahas','dibentuk','dikelola','dikerjakan','dingin','dipandang','dipastikan','doa','domestik','file','halus','hidupnya','huruf','infeksi','janji','jembatan','kaca','keagamaan','kebaikan','kecamatan','kehadiran','keluarganya','kemanusiaan','kepemimpinan','kerap','keselamatan','kilogram','km','koleksi','konteks','kuota','langit','lantaran','lantas','liburan','matang','mayoritas','meja','melaporkan','melintas','memakan','memegang','memenangkan','memeriksa','memperluas','memuat','mencatat','mendatangi','menduga','menembus','menetapkan','mengakibatkan','mengalir','mengenakan','menghentikan','mengklaim','mengundang','menjabat','mental','menyebar','merayakan','merokok','miliki','nak','operator','padat','pameran','pantas','parkir','pasukan','peduli','pemilih','penderitaan','penetapan','pengadilan','pengolahan','penguasa','pengukuran','penjual','permohonan','persegi','persiapan','persyaratan','pertambangan','pidana','populer','pt','pupuk','rangkaian','reaksi','rencananya','reproduksi','ribuan','riwayat','rombongan','sadar','saudara','seluruhnya','sembuh','sepertinya','seri','sertifikasi','sih','sisanya','situ','suku','syarat','tajam','tampaknya','tampilan','tebal','teknis','telepon','telur','tema','tepatnya','terbentuk','tercipta','terdengar','terkesan','ternak','tersenyum','timnya','tol','ucapan','uji','universitas','utamanya','vitamin','wa','walau','zona','ANTARA','Bagian','Banjir','Batam','Budaya','Bursa','Cara','Century','Champions','DPD','Dasar','Dewa','Doktor','Gereja','Golkar','H','Itulah','Jambi','Kaltim','Keluarga','Kepada','Kepulauan','Korupsi','Kredit','Listrik','Lomba','Lowongan','Magister','Mandiri','Masjid','Master','Melalui','Mulai','Nomor','Online','PPP','Pasal','Perancis','Peserta','Propinsi','Putih','Riau','SDM','Seluruh','Tanah','Total','Upaya','Wilayah','York','aliran','asam','aspirasi','at','atap','ban','basah','bau','beasiswa','belah','berbahasa','berjudul','berjumlah','berkas','berkumpul','berlari','berlebihan','bersalah','bertentangan','bertindak','berukuran','besarnya','bibir','busana','derajat','dgn','diajukan','dialami','dialog','dibiarkan','didalam','didik','didirikan','digital','dijalankan','dimaksudkan','disana','disepakati','ditangkap','dlm','dugaan','euro','event','gadis','ganti','gelombang','goreng','hadiah','harap','identitas','iklim','iman','indonesia','interaksi','jawa','jawabannya','judul','jujur','kajian','kakak','kandungan','kapan','karakteristik','karang','kaya','keadilan','kebetulan','kejahatan','kelahiran','kemerdekaan','kepulauan','kesatuan','keterbatasan','komoditas','komplek','konsentrasi','konstruksi','konsultan','kosong','kritik','kuasa','lelah','lelaki','lemak','lingkup','m','main','masukan','material','medan','melaju','melemah','memadai','membahayakan','memecahkan','memerintahkan','memimpin','memohon','memperjuangkan','memperlihatkan','menaikkan','menargetkan','mendaftar','mendekati','mengacu','mengandalkan','menggambarkan','mengobati','mengucapkan','menjanjikan','menyimpan','merasakan','mewakili','minuman','mitra','mohon','mulutnya','musuh','nabi','nenek','novel','nyaris','opini','optimis','optimistis','otomatis','padi','pak','pakar','pasal','pemenang','pencapaian','penegakan','penempatan','pengajaran','pengganti','pengiriman','pengumuman','penyelidikan','perak','perasaan','perbankan','perencanaan','perintah','pernikahan','personel','pertimbangan','perut','petunjuk','plus','point','populasi','pos','prestasi','promosi','protein','puluh','puluhan','putra','putus','raksasa','salam','santri','sastra','sediakan','segmen','semester','seminggu','sepak','setahun','setia','share','siklus','smartphone','spesies','stres','subjek','sungguh','survei','tahanan','tahunan','tas','tegasnya','tempo','terbang','terkejut','terkena','terpisah','tindak','tradisi','transfer','tuh','tuntas','umpan','urusan','usulan','utuh','virus','visi','waktunya','x','zakat','APBD','Akibatnya','Arsenal','Baik','Balai','Barcelona','Bung','Camat','Chelsea','D','DPP','Dapatkan','Depok','Dikatakan','Divisi','Djoko','Dur','Dusun','Duta','General','Google','Gus','HUT','Harus','Hasan','IV','International','Israel','John','Joko','Jusuf','Ke','Kediri','Keempat','Kelurahan','Kepri','Ketiga','Khusus','Ki','Konsep','Konstitusi','Lima','MB','MK','Manager','Manajer','Manchester','Masalah','Mesir','Metode','News','Operasi','PDAM','PKS','Paruh','Pemberantasan','Perguruan','Perjuangan','Prancis','Puskesmas','RSUD','Rapat','Rektor','Ruang','SMK','Sebenarnya','Sidang','Silahkan','Sipil','Soal','Stadion','TPS','Tanjung','Tempat','Tri','Ulama','Vietnam','Windows','X','Yakni','agen','akrab','aktifitas','akurat','alternatif','ambil','angkat','animasi','arsitektur','asuransi','bakti','batuan','beda','beragama','berdampak','berkat','berpendapat','bersikap','berstatus','bertempat','besaran','besi','bunyi','bupati','burung','candi','cek','celana','cost','cucu','dakwah','demo','deskriptif','dibuktikan','didasarkan','dihubungi','dikarenakan','dikenakan','diluncurkan','dimensi','dipergunakan','dipiliah','dirancang','dirawat','dirilis','disajikan','disalurkan','disusun','ditemui','ditingkatkan','diyakini','efisien','elektronik','emosi','fungsinya','gawang','gelas','ha','hanyalah','hemat','hias','hukuman','hutang','imam','induk','intelektual','inti','islam','jahat','jenjang','kabel','kabupaten','kadang','kecerdasan','kedepan','kegagalan','kelapa','kelihatan','kemajuan','kemiskinan','kenangan','kenyataan','kepemilikan','kepuasan','kerajaan','kerugian','kesimpulan','keturunan','keyakinan','keyboard','kisaran','komisi','konferensi','kreatif','lanjutan','lapisan','ledakan','legislatif','lembut','logam','lolos','lubang','lumayan','makam','makhluk','mall','manajer','melakukannya','melanda','melebihi','melepaskan','memandang','memperkenalkan','memproduksi','memudahkan','menara','mencakup','mencintai','mendominasi','menerus','mengakhiri','mengakses','mengantisipasi','mengganggu','menghambat','menghidupkan','menghitung','mengkaji','mengumpulkan','mengurus','meningkatnya','menjalin','menurutnya','menyerah','mesti','mineral','mulia','mundur','mutu','nafsu','nego','nikmat','otomotif','panen','parlemen','partikel','pas','pasang','pasca','pasokan','patah','payudara','pelabuhan','pemakaian','pembahasan','pemegang','penanganan','penerima','pengakuan','pengambilan','pengendara','pengumpulan','penjara','penyanyi','penyebab','penyelesaian','penyusunan','pergantian','perkebunan','perlindungan','perwakilan','pesta','potong','praktek','prasarana','prosedur','protes','provinsi','puisi','ratusan','realisasi','rekening','relevan','ritel','rokok','sabar','sarjana','satuan','sebaliknya','seberapa','sedikitnya','segalanya','sekian','seksual','sembari','senantiasa','senior','sepatu','sepuluh','seringkali','sertifikat','service','struktur','sumur','syariah','syariat','tablet','tahan','tanggap','tenang','tenggelam','terawat','terbilang','terbit','terbuat','tergolong','transformasi','tuduhan','tukar','tulis','tuntutan','up','utang','wakil','waspada','Adam','Adanya','Akbar','Argentina','BNI','Bantul','Batu','Bebas','Belakangan','Bentuk','Biasanya','Blog','Bukit','Bulan','Ciamis','Cinta','City','Contoh','Dana','David','Direktorat','Disamping','Engkau','FIFA','Facebook','Filipina','Games','Gayus','Grand','Hasilnya','Hatta','IPB','IX','Indra','Informatika','Injil','Irak','Istana','Jual','KA','KUR','Kabag','Kali','Kalla','Kamu','Katolik','Kehutanan','Kemenangan','Kenapa','Khilafah','Kijang','Komite','Koordinator','LX','Lumpur','MBA','Maha','Makassar','Mandi','Masa','Mega','Melihat','Mengenai','Mengingat','Merapi','Michael','Milan','Mitra','Muara','Murah','Musa','Nanti','Nasution','Nilai','Office','PBB','PD','Pascasarjana','Pelaksana','Pelatihan','Pemain','Pemda','Pengawasan','Pengelolaan','Perhubungan','Peringatan','Perjanjian','Persipura','Pertanyaan','Pertemuan','Politik','Polres','Pos','Premier','SH','Said','Sama','Sangat','Sayangnya','Sebaliknya','Senayan','Si','Sony','Surat','Surya','Syariah','Tanjungpinang','Tanpa','Telkom','Temukan','Terutama','Toba','Tugas','Tulisan','Turki','UKM','Udara','V','Wali','Wedang','World','YB','a','abad','akar','akhlak','alamat','album','amal','amalan','analisa','aneka','atasan','audit','bahaya','baju','band','banding','bapak','batik','berangkat','berdirinya','berdoa','bergantung','berhadapan','berjanji','bermasalah','berniat','berpakaian','bersangkutan','besok','biji','birokrasi','buatan','campuran','cerah','cokelat','diajak','diangkat','diatasi','dibantu','dibayar','dibeli','dicapai','diciptakan','diisi','dijelaskan','dilarang','dinas','dipahami','dipekerjaan','diperbarui','diperiksa','disiapkan','ditanya','ditempuh','diterbitkan','ditulis','ditunjuk','dituntut','dr','drama','entah','evaluasi','gaji','gigi','gua','gudang','hama','harinya','harta','hasilnya','hektar','hormon','hubungi','implementasi','inci','inggris','inginkan','inovasi','inspirasi','instansi','jilbab','kader','kalo','kamera','kandang','keahlian','kebangsaan','keberhasilan','kebersihan','kecepatan','kedatangan','kehamilan','kena','kendala','kenyataannya','kepadanya','kesiapan','ketertiban','ketinggalan','kitab','klasemen','klien','kotoran','ku','kualitasnya','kubu','kuliner','kurikulum','kursus','kurun','lanjutnya','limbah','logistik','majalah','mandiri','melestarikan','memajukan','memanggil','mematikan','membatasi','membicarakan','membuatnya','membunuh','memenangi','mempelajari','memperingati','menceritakan','mencerminkan','mendadak','menderita','menempel','mengajarkan','mengamankan','mengedepankan','mengejar','mengembalikan','mengemukakan','mengevaluasi','menghilangkan','menginap','mengkonsumsi','mengonsumsi','mentah','menunjang','menyelenggarakan','menyeluruh','menyempurnakan','menyenangkan','menyukai','motif','murni','nan','nasib','ni','nyawa','objek','obligasi','operasional','paham','pakan','papar','parah','pariwisata','pembicara','pembukaan','pemeliharaan','penambahan','pencurian','pendirian','penguatan','pengujian','pengunjung','penipuan','pentingnya','perairan','perkataan','perkawinan','pertengahan','pesantren','pesat','petenis','pinggiran','pipa','potongan','produktif','properti','putaran','rahasia','ramah','rekomendasi','rekor','respon','restoran','revisi','riset','robot','rugi','rumput','rute','saatnya','sah','sambutannya','sanggup','satupun','sebabnya','sebentar','segi','seksi','selaku','semesta','sharing','sifatnya','silahkan','silam','sisa','skala','software','spesifikasi','staff','struktural','surga','system','tapak','teks','telinga','temannya','teratur','terbagi','terdakwa','terganggu','terkadang','tertulis','terumbu','test','tukang','tulang','tunggal','tunggu','turnamen','tutur','tuturnya','ucap','ummat','unggulan','utusan','yah','AKP','ASEAN','ATM','Ahmadiyah','Akhir','Aksi','Ambon','Amin','Angka','Antara','Antasari','Apple','Artikel','Asisten','Asosiasi','Atas','Awalnya','Bakrie','Banda','Bangunan','Belum','Bencana','Biaya','Biro','Buddha','CPNS','Cabang','Cirebon','Cluster','Design','Dewi','Diposkan','Disinggung','Energi','Faktor','Firman','Fitri','Gajah','Galaxy','Gapoktan','Group','Grup','Harapan','Harian','Hidup','Hindu','ISL','Ibrahim','Idul','Ikan','Indonesian','Inter','Istimewa','Jabar','Jenis','Jl','Jurnal','KH','KK','Kalaupun','Kalo','Karno','Kasus','Kebudayaan','Kerajaan','Konsumen','Korban','Kupang','LPS','Laboratorium','Lama','Laut','Lebaran','Madiun','Malam','Menpora','Merah','Merupakan','Mohon','Muhammadiyah','Nama','No','Nugroho','Nusa','On','PU','Pakistan','Palestina','Pariaman','Pariwisata','Pelabuhan','Pelayanan','Pembina','Pemerintahan','Pemilihan','Pemuda','Peningkatan','Penjualan','Perikanan','Persero','Pria','Produksi','Puncak','Putra','Putri','Quran','RUU','Red','Rencana','Ronaldo','SKPD','SPBU','Sakit','Saudara','Sayang','Sekretariat','Selamat','Sesuai','Setiawan','Siswa','Sleman','Strategi','Suara','Suatu','Suku','Sumbar','Super','Tahap','Taiwan','Tegal','Tema','Terlebih','Terminal','Twitter','Uang','VI','VIVAbola','Walau','Wanita','Warna','ac','acuan','agung','akibatnya','aktivis','ala','analis','anggapan','artis','asa','aset','baginya','bahu','bakat','balita','batasan','bawa','bekerjasama','belahan','beralamat','berawal','berbuat','berdua','beredar','berinisial','berjualan','berkah','berkelanjutan','berkuasa','berminat','berperang','berpotensi','bersedia','berujung','bervariasi','bibit','bimbingan','bingung','bobot','bom','brand','bukit','bulu','by','celah','cetak','cibitung','cm','coklat','demam','dengar','depresi','dg','diartikan','dibaca','dibagi','didapat','dihitung','diimbangi','diinginkan','dikonsumsi','dikumpulkan','dilangsungkan','dilaporkan','diolah','dipengaruhi','diperbaiki','dipertahankan','disamping','disarankan','disertai','ditandai','ditempatkan','ditengah','diturunkan','diuji','diungkapkan','dominan','dorongan','dosa','download','efisiensi','eksperimen','ekstrem','elemen','elit','emisi','es','fajar','fakultas','fenomena','filsafat','finansial','frekuensi','gambaran','gejala','gejolak','gelap','gembira','gimana','ginjal','gizi','gunung','hadapan','hambatan','hangat','haram','harian','hawa','hektare','hendaknya','henti','heran','ibunya','ideologi','ijin','ikatan','ilmuwan','imbuhnya','in','independen','institusi','integritas','irigasi','istimewa','jagung','jalannya','jari','jejaring','jemaat','jumpa','kabinet','kaget','kain','kandidat','kantornya','kecantikan','kedelai','kedisiplinan','kehormatan','keindahan','kejujuran','kekasih','kekhawatiran','kelima','kelurahan','kembang','keseimbangan','ketakutan','ketinggian','kira','kombinasi','komersial','kompensasi','kompleks','kondisinya','kondusif','konon','konsisten','kontribusi','kontroversi','koreksi','kualitatif','kuartal','kue','kurangnya','laba','lambat','laptop','larangan','latar','lelang','liberal','lini','link','lintasan','macan','maksud','mas','matematika','melengkapi','melepas','memantau','membaik','membuahkan','memikirkan','memori','mempersiapkan','mempertimbangkan','memprediksi','memprihatinkan','menangkap','mendatangkan','mendidik','menegakkan','menemui','meneruskan','menewaskan','menghabiskan','menghapus','mengharuskan','menghendaki','menguji','mengukur','meninjau','menjauhi','menutupi','menyalurkan','menyembuhkan','merdeka','merespon','meriah','merugikan','meyakinkan','mini','mirip','mode','mulanya','multi','mulut','munculnya','murid','museum','musibah','nafas','nampak','nasi','no','nyeri','organ','pahit','pake','papan','pedesaan','pemanfaatan','pemasaran','pemikiran','pencegahan','pendiri','pengajian','pengamanan','pengamat','pengulas','pengungsi','penjaminan','penyelenggara','penyesuaian','penyidik','penyimpangan','peradaban','perayaan','perdebatan','peredaran','perhitungan','perkara','persis','pertamanya','pertolongan','pertukaran','perunggu','peta','peternak','pm','polos','pompa','pondok','poros','posisinya','praktik','praktis','premium','prihatin','prilaku','prioritas','problem','profesionalisme','puas','radio','repot','responden','revolusi','rumit','sambutan','sampah','sampaikan','santunan','sasaran','sawah','sawit','secepatnya','seimbang','sejatinya','sejauh','sejenis','sekadar','sekalipun','sekretaris','selisih','semalam','semata','semen','semifinal','semula','seniman','sensor','seolah','sepakbola','seragam','seru','sesi','sesudah','setara','seterusnya','sms','spesifik','stabilitas','stok','susah','tali','tandasnya','tangannya','taraf','tarik','tegang','teh','tempur','terbakar','terdaftar','terendah','tergabung','terikat','terinfeksi','terjaga','terjangkau','terkandung','terpenting','tersebar','tertangkap','tertib','terungkap','tiang','time','tolong','topik','training','tumbuhan','ulasan','ulat','untung','upah','usah','vagina','wajar','AC','Abraham','Afghanistan','Alex','Alhamdulillah','Ambil','Anas','Andi','Anggaran','Ani','Asean','Ayo','Ayu','BCA','BPJS','Banjar','Beach','Belitung','Bengkulu','Bersama','Bina','Blitar','Boediono','Brasil','Bulog','C','CPO','DWP','Daihatsu','Daniel','Dapat','Definisi','Demikianlah','Dharma','Drs','Eka','Eksekutif','FC','Fasilitas','Fax','Fenomena','Film','Ford','Fraksi','Fungsi','GHz','GOR','GPS','Gabungan','Garuda','Gaza','Gerak','Gerindra','Global','Gorontalo','Gunakan','Hadi','Haji','Hamid','Hutan','IHSG','IT','Ida','Iklan','Indeks','Indosat','Irfan','Iskandar','Jaksa','Jasa','Juru','Kadang','Kalbar','Kalteng','Kampus','Kapolri','Kartu','Keadaan','Kejaksaan','Kekayaan','Kemarin','Kembali','Kerjasama','Kimia','Kominfo','Komisaris','Kost','Kualitas','Kudus','Kuningan','LONDON','La','Lahan','Lakukan','Langkah','Laporan','Layanan','Lihat','London','Luas','M','MH','MS','MSc','Madinah','Madura','Magelang','Malik','Maluku','Mari','Mau','Mbak','Melaksanakan','Mengubah','Motor','Muslimin','Natal','Ngurah','Nuh','Nur','Oh','PAN','PDI','PMI','Panitia','Paris','Pasangan','Pasuruan','Paus','Pegawai','Pejabat','Pekanbaru','Pekerjaan','Pemberdayaan','Pengembangan','Pengetahuan','Pengusaha','Penilaian','Penyerahan','Perak','Perbedaan','Perda','Perdana','Perjalanan','Perlindungan','Perlu','Pernyataan','Pertahanan','Pertumbuhan','Perwakilan','Polsek','Posisi','Power','RSBI','Rakyat','Rasa','Ratu','Ratusan','Redaksi','Rudi','Rusia','S','SK','SLTA','SM','SMU','Saleh','Samsung','Samudera','Sangihe','Sedang','Segera','Sekali','Sekedar','Sempat','Sepanjang','Sering','Service','Sidoarjo','Stasiun','Steel','Strategis','Sukses','Sulsel','Suriah','Syaikh','Tani','Teori','Tercatat','Termasuk','Terus','Tinggal','Tokyo','Tour','Training','TripWow','Tujuannya','UII','UIN','USA','USD','Umar','Up','Upacara','Usia','Usulan','Vettel','Villa','Wapres','Waspada','Wayan','West','XXXX','Yahudi','aduk','akademika','alaihi','alih','alumni','amanah','ane','angkatan','anjing','apel','aroma','asap','asrama','ato','awan','bak','balasan','barisan','basis','bek','bekasi','belas','bengkel','bentuknya','berbau','berfikir','berharga','beristirahat','berkomentar','berkoordinasi','berlaga','bermuara','berpengalaman','berpuasa','bersubsidi','bersyukur','bertahap','bertekad','berwenang','biar','binatang','biologi','bos','botol','buahnya','bulat','bunuh','cadangan','caleg','canggih','cc','ceramah','cewek','check','ciri','curiga','debat','demokratis','demonstrasi','departemen','desktop','dibakar','dibebaskan','diberitakan','dicari','dicetak','didesain','didorong','diesel','dihentikan','dihuni','dijanjikan','dikemas','dikembalikan','dikemukakan','dikirim','dikit','dikonfirmasi','dilahirkan','dilantik','dilatih','diluar','dimasukkan','diminum','dimuat','dipanggil','dipotong','diproduksi','dirasa','direncanakan','disambut','diselamatkan','disewa','distribusi','disukai','disusul','ditampilkan','dituju','diubah','diucapkan','dong','duit','e','eks','ekspansi','elegan','enak','erat','etika','fashion','fatwa','formulir','full','fundamental','fungsional','gagasan','gen','gue','halal','harapkan','haruslah','herbal','hubungannya','huni','hunian','ideal','ikhlas','indikator','informal','inovatif','intensif','interior','isinya','istirahat','itupun','jalanan','jaman','jamur','janganlah','jati','jeruk','jumlahnya','kabur','kacang','kagum','kambing','karier','karna','keberagaman','kebocoran','kebun','kedudukan','kehutanan','kelak','kelemahan','keluhan','kemana','kemandirian','kemasan','kematiannya','kementerian','kendali','kenyamanan','kepedulian','kepribadian','kerangka','kesan','ketaatan','ketersediaan','ketrampilan','kewenangan','klasifikasi','klasik','klip','kokoh','kolonial','kompetitif','kompor','komposisi','konser','kontak','koperasi','koran','kreativitas','kuantitatif','kuesioner','kumpulan','kuning','kuno','lainya','laku','lamanya','langka','lemahnya','lembar','lereng','libur','liga','lining','logis','lonjakan','lucu','lurus','mafia','mainan','manufaktur','marga','maskapai','melahirkan','melarikan','melatih','memainkan','membacakan','membangkitkan','membenarkan','membersihkan','membiarkan','membuang','memindahkan','mempercepat','mempermudah','mempromosikan','menakjubkan','menampung','menandai','mencalonkan','mencermati','mencontohkan','mencukupi','mendalam','mendalami','mendarat','mendesak','menentang','menerbitkan','mengancam','mengangkut','mengenalkan','mengerikan','mengetahuinya','menghadiri','menghimbau','mengimbau','mengizinkan','mengkritik','menguat','mengungkap','menunda','menunjuk','menuturkan','menyerupai','menyesal','menyesuaikan','menyetujui','merebut','merek','merekam','merekomendasikan','meyakini','minoritas','misal','momentum','mudik','muslimin','n','nash','negaranya','nikah','nol','ofisial','ok','oksigen','om','opsi','orde','orgasme','otot','padanya','pahami','pangkas','paparnya','paripurna','parpol','paten','pelaksana','pelantikan','peluru','pembalap','pembangkit','pembeli','pemberi','pemberitaan','pemberitahuan','pembicaraan','pembunuh','pementasan','pemotongan','penangkapan','penawaran','pendanaan','penelusuran','penerbitan','penertiban','pengamatan','pengeluaran','pengenalan','pengesahan','penggemar','pengobatan','penjaga','penjajah','penunjang','penyebabnya','penyebaran','penyediaan','penyuluhan','peradilan','perantara','perawat','perbatasan','percepatan','percobaan','perikanan','perkampungan','perkantoran','perkiraan','perkotaan','perlengkapan','perluasan','permanen','persaingan','persatu','persetujuan','perspektif','pertempuran','pintar','plat','posting','prediksi','presentasi','produksinya','produktivitas','profil','psikologi','pujian','pulih','ragam','rahim','ramai','rasional','rata','rawan','real','realistis','red','referensi','rekaman','rela','relasi','rentan','rileks','rilis','rincian','rotan','ruko','rukun','rumahnya','rupanya','sahur','sallam','sambungnya','samsung','sangatlah','santai','saran','sayap','segar','semi','sendirinya','sengit','sengketa','senjata','seribu','set','setengah','shahih','show','siapapun','sibuk','simpanan','sinyal','social','substansi','sumberdaya','survey','swasembada','tempatnya','temuan','tenis','terbiasa','terdahulu','terealisasi','terhitung','terigu','terkecil','terkumpul','terlatih','terlepas','terobosan','teroris','terorisme','terpadu','tersisa','tertinggal','thn','tiada','tsb','tu','tunai','tutup','ucapnya','ukurannya','universal','wajahnya','warisan','wasallam','wawancara','wawasan','yen','AM','Abdurrahman','Aburizal','Ahad','Akibat','Akuntan','Alat','Alkitab','Alloh','Aman','Ana','Analisa','Ancaman','Angkasa','Ansor','Arema','Arifin','Aset','Asuransi','Aturan','Aula','Awal','Awards','Ayat','Azhar','BBG','BM','BRI','BTN','Bahan','Bahrain','Bahwa','Balikpapan','Band','Bandar','Bangsa','Banjarmasin','Banyuasin','Bapa','Barca','Bayern','Berbicara','Berita','Berkat','Bicara','Bintan','Bitung','Bone','Boyolali','Brimob','Budi','Bush','By','CD','Calon','Candi','Centre','Chrysler','Club','Coba','Computer','Corolla','Creative','Cuaca','Day','Daya','Deddy','Dekan','Demi','Derby','Didik','Dimana','Dinkes','Disini','Ditjen','Dulu','ES','Eddy','Edi','Efek','Effendi','Eko','Empat','Energy','Euro','Exchange','Expo','F','Fed','Festival','First','Forum','Free','GM','GP','Gandhi','Gejala','Gempa','Gita','Gol','Gunawan','HD','HIV','HP','HTI','Hai','Halaman','Hamas','Healthy','Hidayat','Hijau','Himpunan','Hujan','Husin','IP','IPO','ITB','Ibn','Ingat','Inti','Intinya','Ir','Isi','Ismail','Istilah','Ivan','Iya','Jadwal','Jamsostek','Janji','Jembrana','Jimmy','Jombang','Jong','Juara','Judul','Jurusan','Justru','Kakao','Kalian','Kampung','Kapan','Kapolsek','Karakter','Karawang','Kayu','Keadilan','Kecerdasan','Kedokteran','Keduanya','Kehadiran','Kelas','Kelautan','Kemendikbud','Kementrian','Kenaikan','Kesimpulan','Ketupat','Kisah','Kitab','Koalisi','Koleksi','Kolombia','Komentar','Komitmen','Kompetensi','Kompetisi','Kompleks','Kompol','Komunitas','Konflik','Konon','Kubu','Kunjungan','Kutai','LIPI','LPSE','LPSK','LSM','LampostOnline','Lantaran','Lantas','Lapindo','Latihan','Lewat','Libanon','Linux','Lionel','Lombok','Lorenzo','Los','Ltd','Lukas','Lulusan','Lurah','MPR','MTs','Mabes','Mac','Mark','Maryam','Masuknya','Mbah','Melakukan','Memiliki','Mendengar','Menhut','Merpati','Minahasa','Minyak','Misi','Mitsubishi','Mobile','Mojokerto','Mulyani','Munas','Museum','Musi','Muslimah','Musyawarah','N','Nggak','Nokia','Nopember','Note','Nurul','Of','Olahraga','Olimpiade','Om','One','Orde','PAUD','PBNU','PDIP','PLTU','PPK','PR','Pajak','Paman','Pangan','Pangkalan','Pasifik','Pasukan','Paulus','Pelaksanaan','Pembayaran','Pemikiran','Pemprov','Pendaftaran','Pendapatan','Pengawas','Pengertian','Penggunaan','Pengumuman','Penulis','Penyakit','Perang','Perkara','Perkembangan','Perpustakaan','Pers','Persib','Persiba','Persija','Pertambangan','Perubahan','Pesawat','Peta','Petra','Petugas','Pihak','Pilkada','Plt','Ponorogo','Primer','Prosedur','Pt','Publik','Pura','Purnomo','Qatar','R','REPUBLIKA','Rahman','Rahmat','Rasanya','Rektorat','Roh','SAW','SEA','SMAN','SMPN','SNMPTN','SPBG','SS','SURYA','Salim','Santiago','Sari','Sebagaimana','Sehubungan','Sentul','Serpong','Serta','Sesungguhnya','Setda','Setidaknya','Shallallahu','Sikap','Sir','Siti','Soalnya','Soekarno','Software','Struktur','Suasana','Sukarno','Sun','Sunarto','Sungguh','Supaya','Surga','Survey','Swiss','TK','Taliban','Tanaman','Tanggal','Tarempa','Tata','Taurat','Teluk','Terbaik','Tersangka','Tidore','Tjandra','Tokoh','Tol','Transmigrasi','UGM','Uji','Ujian','Umat','Umumnya','Ustadz','VIP','Video','Wah','Wahana','Wahyu','Xavi','Yaitu','Yani','absen','adiknya','akun','alangkah','algojo','alkohol','am','ama','andalan','angkasa','antibiotik','antusias','asalkan','asisten','asosiasi','asri','asyik','badai','baja','balapan','bambu','bangkit','basil','baterai','bayar','bayaran','bea','bedah','bedanya','belaka','benak','beralasan','beranggapan','berbagi','berbalik','berbarengan','berbunyi','bercerai','bercinta','berdasar','berganti','bergantian','bergengsi','beribadah','beriman','berinteraksi','berkapasitas','berkontribusi','berkurangnya','berlawanan','berlindung','berlomba','bermaksud','bermotor','bermutu','bernyanyi','berpartisipasi','berpegang','berpeluang','berpindah','bersabda','bersatu','bersejarah','bersemangat','berskala','bersumpah','berumur','beruntung','blok','boneka','bosan','bs','buang','bubuk','bukankah','buta','butir','cacat','cair','cakupan','campur','capai','caranya','cat','cemerlang','cincin','cluster','curah','d','daerahnya','dagang','dananya','darat','datangnya','dating','defisit','del','depannya','deretan','desainer','deteksi','devisa','dewa','dewan','diajarkan','diakses','dialokasikan','diare','dibagikan','dibongkar','dicabut','dicegah','didasari','diderita','diganggu','diganti','digantikan','dijadwalkan','dijaga','dijamin','dijumpai','dikategorikan','dikawasan','dikerahkan','dikurangi','dilakukannya','dilalui','dilanda','dilayani','dilingkungan','dimasak','dinaikkan','dinamakan','dioperasikan','dipenuhi','diperbolehkan','dipercepat','diperebutkan','diperluas','dipersiapkan','dipindahkan','diprediksi','dipublikasikan','diputuskan','diraih','direksi','dirubah','dirumah','disadari','disahkan','disatukan','disengaja','disetujui','disimpan','distributor','ditahan','ditekan','ditembak','ditinggalkan','ditolak','ditumbuhi','diundang','diwarnai','dkk','dollar','dosis','eksekutif','eksplorasi','eksternal','et','etik','evakuasi','evolusi','fatal','fee','finalis','fiskal','fitnah','formal','gabah','gabungan','gampang','gan','gelang','gemilang','gerbang','gila','globalisasi','gulma','harmonis','hatinya','hengkang','honda','hosting','iblis','ibukota','identik','imbang','impuls','indikasi','individual','informan','inisiatif','insiden','iri','irit','istana','jaraknya','jatah','jejak','jendela','jg','jimat','jiwanya','jurnal','jurnalistik','kacamata','kak','kakao','kakinya','kala','kalori','kanal','kapasitasnya','karenanya','kawan','kawin','kayak','keatas','keberangkatan','keberanian','kebersamaan','kecakapan','kedalam','kedokteran','keguguran','kegunaan','kehendak','kehidupannya','kejelasan','kejuaraan','kekalahan','kekecewaan','kelulusan','kemacetan','kemasyarakatan','kembalinya','kenang','kenari','kental','kepadamu','kerabat','kerjanya','kerusuhan','kesehatannya','ketahui','ketujuh','kian','kiranya','kl','klo','koalisi','kolesterol','komitmennya','kompak','koneksi','koruptor','kotor','kredibel','kriminal','krn','kuda','kultur','kurs','kwadran','la','laboratorium','landasan','lansia','lapang','lapar','lebaran','leher','liar','liat','lidah','liter','loading','logika','longsor','lot','luhur','macet','makannya','makmur','malas','mantap','mapan','mari','masalahnya','massal','master','masuknya','mayat','megah','melampaui','melancarkan','melayang','meloloskan','melupakan','meluruskan','memaksa','memaksimalkan','membagikan','membakar','membawakan','membeberkan','membela','memberantas','memberinya','membiayai','memeluk','memotong','mempergunakan','memuaskan','memukul','memutar','menaruh','mendapati','mendapatkannya','mendasar','mendengarkan','menentu','mengabaikan','menganalisa','mengantongi','mengawal','mengawasi','mengecilkan','mengeluh','mengendalikan','menggambar','menggandeng','menggarap','menggerakkan','menghemat','mengincar','menginginkan','mengiringi','mengoptimalkan','mengusir','mengusulkan','menipu','menjamu','menolong','mensukseskan'];
 
     // ── Migrate old key ──
     (function() {
@@ -1011,6 +1184,14 @@
                 }
 
                 startCardListener(user.uid);
+
+                // Load daily words state from Firestore
+                if (userDoc.exists && userDoc.data().dailyWords) {
+                    localStorage.setItem(LOCAL_KEY + '_dailywords_' + user.uid, JSON.stringify(userDoc.data().dailyWords));
+                }
+
+                // Delay daily words check until cards are loaded
+                setTimeout(() => checkDailyWords(), 2000);
             } else {
                 userName.textContent = '';
                 userPhoto.style.display = 'none';
@@ -1019,6 +1200,8 @@
                 if (unsubCards) { unsubCards(); unsubCards = null; }
                 renderStreak(loadStreak());
                 refreshUI();
+                // Check daily words for anonymous users too
+                checkDailyWords();
             }
         });
 
@@ -1193,6 +1376,103 @@
         }
     }
 
+    // ── Daily Words ──
+    function loadDailyWords() {
+        const key = currentUser ? LOCAL_KEY + '_dailywords_' + currentUser.uid : LOCAL_KEY + '_dailywords';
+        const raw = localStorage.getItem(key);
+        if (raw) try { return JSON.parse(raw); } catch {}
+        return { nextWordIndex: 0, lastAddedDate: null };
+    }
+
+    function saveDailyWords(state) {
+        const key = currentUser ? LOCAL_KEY + '_dailywords_' + currentUser.uid : LOCAL_KEY + '_dailywords';
+        localStorage.setItem(key, JSON.stringify(state));
+        if (currentUser) {
+            db.collection('users').doc(currentUser.uid).set({ dailyWords: state }, { merge: true });
+        }
+    }
+
+    async function checkDailyWords() {
+        const settings = Storage.getSettings();
+        if (settings.targetLang !== 'id') return;
+
+        const state = loadDailyWords();
+        const today = getStreakDay();
+        if (state.lastAddedDate === today) return;
+
+        const cards = Storage.getCards();
+        const existingBacks = new Set(
+            cards.filter(c => c.targetLang === 'id').map(c => c.back.toLowerCase())
+        );
+
+        let added = 0;
+        let idx = state.nextWordIndex;
+        const target = 5;
+
+        while (added < target && idx < INDONESIAN_WORDS.length) {
+            const word = INDONESIAN_WORDS[idx];
+            idx++;
+            if (existingBacks.has(word.toLowerCase())) continue;
+
+            try {
+                const result = await translate(word, 'id', 'en');
+                const english = result.translatedText;
+                const cardId = await Storage.addCard(english, word, 'en', 'id');
+                if (cardId) {
+                    added++;
+                    existingBacks.add(word.toLowerCase());
+                }
+            } catch (err) {
+                break;
+            }
+        }
+
+        state.nextWordIndex = idx;
+        state.lastAddedDate = today;
+        saveDailyWords(state);
+
+        if (added > 0) {
+            notify(`${added} new Indonesian word${added !== 1 ? 's' : ''} added!`);
+            refreshUI();
+        }
+    }
+
+    // ── Benchmark Progress ──
+    const BENCHMARKS = [
+        { target: 500, label: 'Tourist', desc: 'Basic introductions' },
+        { target: 1000, label: 'Conversational', desc: 'Everyday situations' },
+        { target: 3000, label: '95% Coverage', desc: 'Everyday texts' },
+        { target: 5000, label: '98% Coverage', desc: 'Learn from context' }
+    ];
+
+    function renderBenchmarkProgress() {
+        const el = document.getElementById('benchmark-progress');
+        const cards = Storage.getCards();
+        const idCards = cards.filter(c => c.targetLang === 'id');
+
+        if (idCards.length === 0) {
+            el.style.display = 'none';
+            return;
+        }
+
+        const knownCount = idCards.filter(c => (c.box || 0) >= 2).length;
+
+        el.style.display = 'block';
+        el.innerHTML = '<h4>Language Progress (Indonesian)</h4>' +
+            BENCHMARKS.map(b => {
+                const pct = Math.min(100, Math.round((knownCount / b.target) * 100));
+                return `<div class="benchmark-bar">
+                    <div class="benchmark-label">
+                        <span class="benchmark-name">${b.label} (${b.target.toLocaleString()} words)</span>
+                        <span class="benchmark-count">${knownCount} / ${b.target.toLocaleString()} — ${pct}%</span>
+                    </div>
+                    <div class="benchmark-track">
+                        <div class="benchmark-fill" style="width:${pct}%"></div>
+                    </div>
+                </div>`;
+            }).join('');
+    }
+
     // ── Init ──
     document.addEventListener('DOMContentLoaded', () => {
         initAuth();
@@ -1262,7 +1542,14 @@
                 document.getElementById('view-' + viewName).classList.add('active');
                 currentView = viewName;
                 if (viewName === 'cards') renderCardsList();
-                if (viewName === 'review') { renderBucketOverview(); resetReviewView(); }
+                if (viewName === 'review') {
+                    if (reviewSession) {
+                        showCurrentCard();
+                    } else {
+                        renderBucketOverview();
+                        resetReviewView();
+                    }
+                }
             });
         });
     }
@@ -1381,6 +1668,8 @@
             document.querySelector('nav.tabs button[data-view="review"]').click();
         });
         document.getElementById('cards-lang-filter').addEventListener('change', renderCardsList);
+        document.getElementById('cards-box-filter').addEventListener('change', renderCardsList);
+        document.getElementById('cards-search').addEventListener('input', renderCardsList);
 
         // Manual add
         document.getElementById('btn-manual-add').addEventListener('click', async () => {
@@ -1406,6 +1695,8 @@
     function renderCardsList() {
         const cards = Storage.getCards();
         const filterEl = document.getElementById('cards-lang-filter');
+        const boxFilterEl = document.getElementById('cards-box-filter');
+        const searchEl = document.getElementById('cards-search');
 
         const targetLangs = [...new Set(cards.map(c => c.targetLang))];
         const currentFilter = filterEl.value;
@@ -1414,7 +1705,33 @@
         if (targetLangs.includes(currentFilter) || currentFilter === 'all') filterEl.value = currentFilter;
 
         const filter = filterEl.value;
-        const filtered = filter === 'all' ? cards : cards.filter(c => c.targetLang === filter);
+        let filtered = filter === 'all' ? cards : cards.filter(c => c.targetLang === filter);
+
+        // Search filter
+        const searchVal = (searchEl ? searchEl.value : '').trim().toLowerCase();
+        if (searchVal) {
+            filtered = filtered.filter(c =>
+                c.front.toLowerCase().includes(searchVal) ||
+                c.back.toLowerCase().includes(searchVal)
+            );
+        }
+
+        // Box filter — rebuild options from current language-filtered cards (before search)
+        const langFiltered = filter === 'all' ? cards : cards.filter(c => c.targetLang === filter);
+        const presentBoxes = [...new Set(langFiltered.map(c => c.box || 0))].sort((a, b) => a - b);
+        const currentBoxFilter = boxFilterEl ? boxFilterEl.value : 'all';
+        if (boxFilterEl) {
+            boxFilterEl.innerHTML = '<option value="all">All boxes</option>';
+            presentBoxes.forEach(b => boxFilterEl.add(new Option(BOX_LABELS[b], b)));
+            if (presentBoxes.includes(Number(currentBoxFilter)) || currentBoxFilter === 'all') {
+                boxFilterEl.value = currentBoxFilter;
+            }
+        }
+
+        const boxFilter = boxFilterEl ? boxFilterEl.value : 'all';
+        if (boxFilter !== 'all') {
+            filtered = filtered.filter(c => (c.box || 0) === Number(boxFilter));
+        }
 
         const listEl = document.getElementById('cards-list');
         const emptyEl = document.getElementById('cards-empty');
@@ -1489,6 +1806,49 @@
         document.getElementById('btn-review-again').addEventListener('click', () => { renderBucketOverview(); resetReviewView(); beginReviewSession(); });
         document.getElementById('review-lang-filter').addEventListener('change', () => { renderBucketOverview(); resetReviewView(); });
         document.getElementById('btn-begin-review').addEventListener('click', beginReviewSession);
+
+        document.getElementById('btn-review-edit').addEventListener('click', () => {
+            if (!reviewSession) return;
+            const item = reviewSession.items[reviewSession.index];
+            const card = Storage.getCards().find(c => c.id === item.card.id);
+            if (!card) return;
+            document.getElementById('review-edit-front').value = card.front;
+            document.getElementById('review-edit-back').value = card.back;
+            document.getElementById('review-edit-area').style.display = 'block';
+            document.getElementById('btn-review-edit').style.display = 'none';
+        });
+
+        document.getElementById('btn-review-cancel-edit').addEventListener('click', () => {
+            document.getElementById('review-edit-area').style.display = 'none';
+            document.getElementById('btn-review-edit').style.display = '';
+        });
+
+        document.getElementById('btn-review-save-edit').addEventListener('click', async () => {
+            if (!reviewSession) return;
+            const item = reviewSession.items[reviewSession.index];
+            const newFront = document.getElementById('review-edit-front').value.trim();
+            const newBack = document.getElementById('review-edit-back').value.trim();
+            if (!newFront || !newBack) { notify('Enter both words', 'error'); return; }
+            await Storage.updateCard(item.card.id, { front: newFront, back: newBack });
+            // Update all matching items in reviewSession
+            reviewSession.items.forEach(it => {
+                if (it.card.id === item.card.id) {
+                    it.card.front = newFront;
+                    it.card.back = newBack;
+                    if (it.direction === 'forward') {
+                        it.questionWord = newFront;
+                        it.answerWord = newBack;
+                    } else {
+                        it.questionWord = newBack;
+                        it.answerWord = newFront;
+                    }
+                }
+            });
+            document.getElementById('review-edit-area').style.display = 'none';
+            document.getElementById('btn-review-edit').style.display = '';
+            showCurrentCard();
+            notify('Card updated');
+        });
     }
 
     function resetReviewView() {
@@ -1512,11 +1872,12 @@
         const filter = filterEl.value;
         const filtered = filter === 'all' ? cards : cards.filter(c => c.targetLang === filter);
 
-        const buckets = [0, 1, 2, 3, 4].map(box => {
+        const allBoxes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+        const buckets = allBoxes.map(box => {
             const inBox = filtered.filter(c => (c.box || 0) === box);
             const due = getDueCards(inBox).length;
             return { box, total: inBox.length, due };
-        });
+        }).filter(b => b.total > 0 || b.box <= 4);
 
         const totalDue = buckets.reduce((s, b) => s + b.due, 0);
 
@@ -1537,6 +1898,8 @@
             startBtn.textContent = `Review ${totalDue} card${totalDue !== 1 ? 's' : ''} (${totalDue * 2} questions)`;
             startBtn.disabled = false;
         }
+
+        renderBenchmarkProgress();
     }
 
     function beginReviewSession() {
@@ -1585,6 +1948,8 @@
         document.getElementById('card-back-word').textContent = item.answerWord;
         document.getElementById('card-back-lang').textContent = langName(item.answerLang);
         document.getElementById('flashcard').classList.remove('flipped');
+        document.getElementById('review-edit-area').style.display = 'none';
+        document.getElementById('btn-review-edit').style.display = '';
     }
 
     function answerCard(knewIt) {
@@ -1601,7 +1966,10 @@
                 const bothCorrect = results.forward === true && results.reverse === true;
                 const card = Storage.getCards().find(c => c.id === cardId);
                 if (!card) continue;
-                const newBox = bothCorrect ? Math.min((card.box || 0) + 1, 4) : 0;
+                const currentBox = card.box || 0;
+                const newBox = bothCorrect
+                    ? Math.min(currentBox + 1, 11)
+                    : currentBox >= 5 ? 4 : 0;
                 const intervalDays = LEITNER_INTERVALS[newBox];
                 const nextReview = intervalDays === 0 ? null : new Date(Date.now() + intervalDays * 86400000).toISOString();
                 Storage.updateCard(cardId, { box: newBox, lastReviewed: new Date().toISOString(), nextReview });
@@ -1640,6 +2008,8 @@
         document.getElementById('review-summary-text').textContent = `You answered ${pct}% correctly across both directions.`;
         document.getElementById('review-progress').textContent = 'Done!';
         updateCardCountBadge();
+        renderBucketOverview();
+        reviewSession = null;
     }
     </script>
 </body>
