@@ -1753,14 +1753,12 @@
             );
         }
 
-        // Box filter — rebuild options from current language-filtered cards (before search)
-        const langFiltered = filter === 'all' ? cards : cards.filter(c => c.targetLang === filter);
-        const presentBoxes = [...new Set(langFiltered.map(c => c.box || 0))].sort((a, b) => a - b);
+        // Box filter — always show all 12 boxes
         const currentBoxFilter = boxFilterEl ? boxFilterEl.value : 'all';
         if (boxFilterEl) {
             boxFilterEl.innerHTML = '<option value="all">All boxes</option>';
-            presentBoxes.forEach(b => boxFilterEl.add(new Option(BOX_LABELS[b], b)));
-            if (presentBoxes.includes(Number(currentBoxFilter)) || currentBoxFilter === 'all') {
+            BOX_LABELS.forEach((label, b) => boxFilterEl.add(new Option(label, b)));
+            if (currentBoxFilter === 'all' || Number(currentBoxFilter) < BOX_LABELS.length) {
                 boxFilterEl.value = currentBoxFilter;
             }
         }
@@ -1914,7 +1912,7 @@
             const inBox = filtered.filter(c => (c.box || 0) === box);
             const due = getDueCards(inBox).length;
             return { box, total: inBox.length, due };
-        }).filter(b => b.total > 0 || b.box <= 4);
+        });
 
         const totalDue = buckets.reduce((s, b) => s + b.due, 0);
 
